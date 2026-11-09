@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Xếp lịch phỏng vấn | ClubFlow</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="schedule-page">
+  <a class="skip-link" href="#main-content">Bỏ qua điều hướng</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">C</span><span>ClubFlow</span></div>
+      <nav class="top-nav" aria-label="Điều hướng chính">
+        <a href="index.html">1. Tạo chiến dịch</a>
+        <a href="review.html">2. Duyệt đơn</a>
+        <span class="nav-current" aria-current="page">3. Xếp lịch</span>
+      </nav>
+      <span class="role-pill">Executive workspace</span>
+    </div>
+  </header>
+
+  <main id="main-content" class="shell main-content">
+    <div class="breadcrumb">CLB Công nghệ và Sáng tạo <span aria-hidden="true">/</span> Tuyển thành viên <span aria-hidden="true">/</span> Xếp lịch phỏng vấn</div>
+    <section class="page-intro" aria-labelledby="page-title"><div><p class="eyebrow">TUYỂN THÀNH VIÊN CLB CÔNG NGHỆ MÙA THU 2026</p><h1 id="page-title">Xếp lịch phỏng vấn</h1><p class="lead">Bản nháp cho bốn đơn Shortlisted sau khi đợt nhận đơn đóng ngày 05/11/2026. Lịch phỏng vấn dự kiến chỉ diễn ra ngày 10/11/2026.</p></div><div class="draft-badge">Bản nháp · cần xử lý</div></section>
+
+    <section class="schedule-stats" aria-label="Tổng quan lịch nháp"><div class="stat-card"><span>Đơn cần xếp lịch</span><strong>04</strong><small>A01–A04 Shortlisted</small></div><div class="stat-card stat-proposed"><span>Proposed</span><strong>01</strong><small>Đã có lịch hợp lệ</small></div><div class="stat-card stat-conflict"><span>Conflict</span><strong>02</strong><small>A01 và A02 trùng giờ</small></div><div class="stat-card stat-unassigned"><span>Unassigned</span><strong>01</strong><small>A04 chưa có khung giờ</small></div></section>
+
+    <section class="panel schedule-settings" aria-labelledby="settings-heading"><div class="panel-heading"><span class="section-number">01</span><div><h2 id="settings-heading">Thiết lập xếp lịch</h2><p>Một ngày phỏng vấn, một thời lượng chung cho toàn bộ chiến dịch.</p></div></div>
+      <div class="schedule-fields"><div class="tool-field"><label for="interview-date">Ngày phỏng vấn</label><input id="interview-date" type="date" value="2026-11-10" disabled></div><div class="tool-field"><label for="window-start">Bắt đầu</label><input id="window-start" type="time" value="09:00" disabled></div><div class="tool-field"><label for="window-end">Kết thúc</label><input id="window-end" type="time" value="11:00" disabled></div><div class="tool-field"><label for="slot-duration">Thời lượng mỗi lượt</label><select id="slot-duration" disabled><option>15 phút</option><option selected>20 phút</option><option>30 phút</option></select></div></div>
+      <p class="prototype-note">Các trường và nút tạo lịch là giao diện minh họa. Bản HTML tĩnh không thay đổi khung giờ hay tính lịch tự động.</p>
+      <div class="schedule-action"><button class="button button-secondary" type="button" disabled>Tạo lại lịch nháp</button></div>
+      <div class="rules-box"><h3>Quy tắc xếp lịch dự kiến</h3><ul><li>Mỗi đơn Shortlisted có tối đa một cuộc phỏng vấn với một người phỏng vấn đúng chuyên môn; toàn chiến dịch dùng cùng thời lượng 20 phút đã chọn (có thể chọn 15, 20 hoặc 30 phút trong hệ thống dự kiến).</li><li>Lượt phỏng vấn phải nằm trong 09:00–11:00, trùng thời gian rảnh của ứng viên và người phỏng vấn, đồng thời có phòng trống.</li><li>Một ứng viên, người phỏng vấn hoặc phòng không thể xuất hiện ở hai cuộc phỏng vấn chồng giờ. Mỗi phòng chỉ phục vụ một lượt tại một thời điểm.</li><li>Khi tạo lịch, hệ thống dự kiến chọn tổ hợp khung giờ, người phỏng vấn đủ chuyên môn và phòng hợp lệ đầu tiên theo thứ tự. Sau khi chỉnh sửa thủ công, hệ thống dự kiến kiểm tra lại cả ứng viên, người phỏng vấn, khung giờ và phòng; lịch có xung đột không thể được xác nhận.</li></ul></div>
+    </section>
+
+    <section class="resource-grid" aria-label="Nguồn lực và thời gian rảnh">
+      <div class="panel resource-panel"><h2>Người phỏng vấn đủ chuyên môn</h2><p class="resource-intro">Đây là những Interviewer được CLB phân công theo chuyên môn vị trí; họ khác với Executive xét đơn và không trùng với bốn ứng viên.</p><ul class="resource-list"><li><strong>Đặng Thu Hà</strong><span>Ban Nội dung · rảnh 09:00–10:00</span></li><li><strong>Võ Quốc Khánh</strong><span>Ban Sự kiện · rảnh 09:00–11:00</span></li><li><strong>Bùi Mai Linh</strong><span>Ban Thiết kế · rảnh 09:00–11:00</span></li></ul></div>
+      <div class="panel resource-panel"><h2>Ứng viên &amp; phòng</h2><p class="resource-intro">Thời gian rảnh mẫu của ứng viên và phòng có thể dùng trong cửa sổ 09:00–11:00.</p><ul class="resource-list"><li><strong>Nguyễn Thị Minh Anh · A01/A02</strong><span>Rảnh 09:00–09:40</span></li><li><strong>Trần Quang Huy · A03</strong><span>Rảnh 09:20–10:00</span></li><li><strong>Lê Hoàng Phúc · A04</strong><span>Rảnh 10:00–11:00</span></li><li><strong>Phòng Lab 1, Lab 2, Lab 3</strong><span>Trống 09:00–11:00, mỗi phòng một lượt tại cùng thời điểm</span></li></ul></div>
+    </section>
+
+    <section class="panel timetable-panel" aria-labelledby="timetable-heading"><div class="review-section-head"><div><p class="side-kicker">BẢN NHÁP SAU CHỈNH SỬA THỦ CÔNG</p><h2 id="timetable-heading">Bảng lịch phỏng vấn</h2><p>Chỉ gồm A01–A04. A05 đã Rejected nên không có trong lịch.</p></div><button class="button button-secondary" type="button" disabled>Xuất lịch</button></div>
+      <div class="conflict-alert" role="note"><strong>Nguồn gốc xung đột A01/A02:</strong> Trong tình huống minh họa, Executive đã sửa thủ công A02 từ 09:20–09:40 sang 09:00–09:20 mà không đổi A01. Kiểm tra sau chỉnh sửa phát hiện hai đơn của Nguyễn Thị Minh Anh cùng giờ ngày 10/11/2026. Hai Interviewer và hai phòng khác nhau vẫn không giải quyết được việc một ứng viên phải có mặt ở hai buổi. Có thể đưa A02 về 09:20–09:40 vì ứng viên, người phỏng vấn và Lab 2 đều rảnh lúc đó; cần kiểm tra lại trước khi lưu bản nháp. Lịch này không phải kết quả vừa tự tạo từ quy tắc chọn tổ hợp hợp lệ đầu tiên.</div>
+      <div class="table-wrap" role="region" tabindex="0" aria-label="Bảng lịch có thể cuộn ngang trên màn hình nhỏ"><table><caption>Lịch nháp sau chỉnh sửa thủ công, ngày 10/11/2026, thời lượng mỗi lượt 20 phút</caption><thead><tr><th scope="col">Đơn / ứng viên</th><th scope="col">Vị trí</th><th scope="col">Ngày</th><th scope="col">Khung giờ</th><th scope="col">Người phỏng vấn</th><th scope="col">Phòng</th><th scope="col">Trạng thái &amp; lý do</th><th scope="col">Thao tác</th></tr></thead><tbody>
+        <tr><th scope="row"><strong>A01</strong><span>Nguyễn Thị Minh Anh</span></th><td>Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng</td><td>10/11/2026</td><td>09:00–09:20</td><td>Đặng Thu Hà</td><td>Lab 1</td><td><span class="status-badge status-conflict">Conflict</span><small>Trùng lịch của cùng ứng viên với A02.</small></td><td><button class="table-button" type="button" disabled>Giải quyết</button></td></tr>
+        <tr><th scope="row"><strong>A02</strong><span>Nguyễn Thị Minh Anh</span></th><td>Điều phối viên Sự kiện</td><td>10/11/2026</td><td>09:00–09:20</td><td>Võ Quốc Khánh</td><td>Lab 2</td><td><span class="status-badge status-conflict">Conflict</span><small>Trùng lịch của cùng ứng viên với A01.</small></td><td><button class="table-button" type="button" disabled>Giải quyết</button></td></tr>
+        <tr><th scope="row"><strong>A03</strong><span>Trần Quang Huy</span></th><td>Thiết kế Trải nghiệm</td><td>10/11/2026</td><td>09:20–09:40</td><td>Bùi Mai Linh</td><td>Lab 3</td><td><span class="status-badge status-proposed">Proposed</span><small>Không trùng ứng viên, người phỏng vấn hoặc phòng.</small></td><td><button class="table-button" type="button" disabled>Chỉnh sửa</button></td></tr>
+        <tr><th scope="row"><strong>A04</strong><span>Lê Hoàng Phúc</span></th><td>Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng</td><td>10/11/2026</td><td>Chưa có</td><td>Chưa có</td><td>Chưa có</td><td><span class="status-badge status-unassigned">Unassigned</span><small>Ứng viên rảnh 10:00–11:00 nhưng người phỏng vấn Ban Nội dung đủ chuyên môn chỉ rảnh 09:00–10:00; không có khung 20 phút chung.</small></td><td><button class="table-button" type="button" disabled>Gán khung giờ</button></td></tr>
+      </tbody></table></div>
+      <p class="prototype-note">Giải quyết, Chỉnh sửa, Gán khung giờ và Xuất lịch là các nút minh họa; lịch nháp không tự thay đổi.</p>
+    </section>
+
+    <section class="approval-grid" aria-labelledby="approval-heading"><div class="panel approval-panel"><div class="panel-heading"><span class="section-number">02</span><div><h2 id="approval-heading">Điều kiện phê duyệt</h2><p>Không thể xác nhận bản nháp khi còn xung đột hoặc đơn chưa xếp lịch.</p></div></div><ul class="approval-list"><li class="check-passed"><span aria-hidden="true">✓</span><div><strong>Đã đóng nhận đơn</strong><small>Đóng ngày 05/11/2026.</small></div></li><li class="check-passed"><span aria-hidden="true">✓</span><div><strong>Đã xét mọi đơn</strong><small>05 / 05 đơn đã có quyết định.</small></div></li><li class="check-blocked"><span aria-hidden="true">!</span><div><strong>Mỗi đơn Shortlisted có một lịch hợp lệ</strong><small>A01 và A02 chồng giờ; A04 chưa có lịch.</small></div></li><li class="check-blocked"><span aria-hidden="true">!</span><div><strong>Không còn Conflict hoặc Unassigned</strong><small>Hiện còn 02 Conflict và 01 Unassigned.</small></div></li></ul><div class="approval-actions"><button class="button button-secondary" type="button" disabled>Lưu thay đổi bản nháp</button><button class="button button-primary" type="button" disabled>Phê duyệt &amp; xác nhận lịch</button></div><p class="prototype-note">Lưu thay đổi chỉ dành cho bản nháp, không xác nhận lịch. Nút phê duyệt hiện không khả dụng vì A01/A02 trùng giờ và A04 chưa có khung giờ. Bản HTML tĩnh không lưu hoặc xác nhận dữ liệu.</p></div></section>
+
+    <section class="confirmed-preview" aria-labelledby="confirmed-heading"><div><p class="side-kicker">MINH HỌA TRẠNG THÁI TƯƠNG LAI — KHÔNG PHẢI CHIẾN DỊCH HIỆN TẠI</p><h2 id="confirmed-heading">Sau khi xác nhận — xem trước trạng thái</h2><p>Chỉ khi cả bốn đơn Shortlisted có lịch hợp lệ, không chồng giờ và Executive phê duyệt, thiết lập chiến dịch, quyết định đơn và bảng lịch mới chuyển sang chỉ đọc. Chỉnh sửa, Gán khung giờ và Tạo lại lịch nháp sẽ bị vô hiệu hóa; ứng viên và người phỏng vấn liên quan vẫn xem được lịch đã xác nhận. Xác nhận lịch không công bố kết quả Pass/Fail cuối cùng.</p></div><span class="confirmed-badge">Confirmed</span></section>
+  </main>
+
+  <footer class="site-footer"><div class="shell footer-inner"><span>ClubFlow · Mẫu giao diện tuyển thành viên</span><span>Chiến dịch Mùa Thu 2026</span></div></footer>
+</body>
+</html>
