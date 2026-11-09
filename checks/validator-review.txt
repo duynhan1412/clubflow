@@ -1,0 +1,5 @@
+W3C Nu HTML Checker result for review.html
+Checked: 2026-11-09 19:45 +0700 by uploading the file contents to https://validator.w3.org/nu/ (out=text)
+SHA-1 of checked file: a2499dfb302ea87bd6b1f9cb64b3eb63f78e10fa
+
+The document validates according to the specified schema(s).

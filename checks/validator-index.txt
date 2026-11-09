@@ -1,0 +1,5 @@
+W3C Nu HTML Checker result for index.html
+Checked: 2026-11-09 19:45 +0700 by uploading the file contents to https://validator.w3.org/nu/ (out=text)
+SHA-1 of checked file: 1af1d22862ad35b90a1936980038feafbf8c9615
+
+The document validates according to the specified schema(s).
