@@ -106,3 +106,37 @@ Communicate the confirmed-state rule in a concise note or preview: after confirm
 Keep the prototype honest about interaction. A real relative link must perform each main-flow page transition. For every other displayed control, either implement a small accessible interaction that still leaves essential content visible with JavaScript disabled, or identify it precisely as a visual-only control in `PROTOTYPE.md`. Do not claim that static HTML stores data, validates publication, generates schedules, exports files, or confirms a schedule unless that behavior has actually been implemented and checked.
 
 In `PROTOTYPE.md`, include every team member's full name and student ID; opening instructions and network requirements; a row for each page and its links; the main design choices and reasons; every control not wired yet; and the CSS choice, spacing scale, and breakpoints. In `AI-LOG.md`, record each assistant task as it happens, including the tool, request, what was kept, what was changed, what was rejected, and the check that revealed any error. Update the self-assessment only after the screenshots, validator results, and commits provide evidence for the scores claimed.
+
+### Follow-up prompt — showing Confirmed without confirming the sample draft
+
+English rendering of the team's request: Clarify how Screen 3 should show the Confirmed state while keeping the conflicting draft as its primary sample data.
+
+Keep the page's main header, four-row timetable, status counters, conflict explanation, and approval checklist in **Draft — action required** state. The primary sample remains 1 Proposed, 2 Conflict, and 1 Unassigned. The Approve & Confirm Schedule control is disabled or clearly unavailable, with the exact blockers named: A01/A02 overlap and A04 has no slot. Do not label any of these four draft assignments Confirmed.
+
+Below the main draft, add one compact, visually secondary section titled **After confirmation — state preview**. Label it explicitly as an illustration of the future state, not the current campaign state. It should show a Confirmed badge and explain that, only after all four shortlisted applications have valid non-overlapping assignments and the Executive approves, the campaign settings, application decisions, and timetable become read-only; Edit, Assign Slot, and Regenerate Draft are disabled, while confirmed schedules remain viewable to the relevant applicant and interviewer. Confirmation does not publish final Pass/Fail results.
+
+Do not place another timetable or numerical status counters in this preview. That keeps the only displayed schedule totals tied to the four-row draft and avoids implying that the sample conflicts were silently resolved. If a real interactive Confirmed view is implemented later, it must first resolve A01/A02 and assign A04, recalculate the counters, and block confirmation until all conditions pass; otherwise keep this as a clearly labeled explanatory preview and document the non-working approval control in `PROTOTYPE.md`.
+
+### Follow-up prompt — create the first page
+
+User prompt (verbatim): `tạo index.html`
+
+### Follow-up prompt — create application review
+
+User prompt (verbatim): `tạo review.html`
+
+### Follow-up prompt — create interview scheduling
+
+User prompt (verbatim): `tạo schedule.html`
+
+### Follow-up prompt — resolve review and schedule logic
+
+User prompt (verbatim):
+
+**Logic chưa ổn:**
+
+1. **Nguồn gốc xung đột chưa được giải thích.** Trang lịch nói thuật toán dự kiến chọn tổ hợp hợp lệ đầu tiên, nhưng lịch nháp lại xếp A01 và A02 cùng 09:00–09:20 dù A02 có thể chuyển sang 09:20–09:40. Nếu đây là xung đột do Executive sửa lịch thủ công, cần nói rõ; nếu đây là lịch vừa tự tạo, nó trái quy tắc tạo lịch đã ghi. [schedule.html (line 34)](D:/24127094/WebDev/project/clubflow/schedule.html:34) · [dòng A01–A02 (line 45)](D:/24127094/WebDev/project/clubflow/schedule.html:45)
+2. **Trang duyệt chỉ cho xem chi tiết A01.** A02–A05 hiện là các thẻ tĩnh, không có cách chọn để đọc CV hay lời trình bày của từng đơn. Vì thế giao diện chưa thể hiện đầy đủ bước “xét từng đơn”, dù các quyết định và thống kê mẫu vẫn nhất quán. [review.html (line 48)](D:/24127094/WebDev/project/clubflow/review.html:48) · [chi tiết A01 (line 58)](D:/24127094/WebDev/project/clubflow/review.html:58)
+3. **Vai trò người phỏng vấn được mô tả chưa đúng.** Trang lịch gọi họ là “thành viên Executive”, trong khi brief nguồn phân biệt **Executive** và **Interviewer** là hai vai trò. Nên mô tả họ là người phỏng vấn được CLB phân công, đủ chuyên môn cho vị trí. [schedule.html (line 38)](D:/24127094/WebDev/project/clubflow/schedule.html:38) D:\24127094\WebDev\project\ClubFlow-final-project-brief.pdf
+
+Ngoài phần logic, ở **360 px** thanh điều hướng của cả ba trang vẫn có một mục vượt mép phải. Toàn trang không cuộn ngang, nhưng phép kiểm tra phần tử vượt mép của rubric vẫn phát hiện mục đó.
