@@ -130,3 +130,43 @@ Kept: The provisional report's evidence-only scoring and the existing AI work lo
 Changed: Updated the report's commit-history evidence and provisional total from 32 to 34 after the three new local commits.
 Rejected: Including `checks/` in Nhân's documentation commit because the original division assigns that folder to Dũng, or presenting the provisional score as the final ZIP score.
 Checks: The current repository has separate local commits for the brief, `index.html`, and `schedule.html`; no push has occurred.
+
+## 2026-11-09 — setting up the repository (Tạ Đức Dũng — 24127347)
+Tool: Claude Code (Claude Opus 5.5).
+Asked for: `setup cho toi` — connect a local folder to the empty `duynhan1412/clubflow` repository.
+Kept: The clone and the `README.md` commit `b91bc8f`, which Nhân later merged into his history.
+Changed: When Nhân's history arrived with `AGENTS.md`, the assistant dropped its own `CLAUDE.md` rules-file commit (kept only on the local branch `backup/dung-claude-md`) so the team has one rules file. Set the repository's `user.name` to Tạ Đức Dũng; the README commit still shows the machine's global name "Junta".
+Rejected: The assistant's plan to rewrite the first commit with `git push --force` so that it holds the rules file; the force push was blocked and the team history was kept as it is.
+Checks: `git log --all --graph` after `git fetch` showed both histories joined at Nhân's merge `1178f42`.
+
+## 2026-11-09 — planning Dũng's part
+Tool: Claude Code (`/ak:brainstorm`).
+Asked for: `brainstorm đề bài này cho tôi`, with the assignment, rubric and team task screenshots.
+Kept: Static HTML with plain CSS custom properties; `<details>` for each application's CV and motivation so they open without JavaScript; a GET form for search/filter/sort documented as not wired; list and detail stacked on a phone and side by side at 1280 px.
+Changed: The assistant could not open the ClubFlow brief on Google Drive (sign-in required, HTTP 401); the screen features and *Fix these* list were then taken from the repository's `brief.md`.
+Rejected: Switching to React (no extra marks, plus a `dist/` folder to hand in).
+Checks: None — planning only.
+
+## 2026-11-09 — creating `styles.css` and `review.html`
+Tool: Claude Code.
+Asked for: `repo mới được bạn kia commit đó, xử lý đi` — make Dũng's files against `AGENTS.md` and `brief.md`.
+Kept: One stylesheet for all three pages using the classes Nhân's pages already use; spacing tokens `--space-1`…`--space-7` (4–48 px), breakpoints 48rem/80rem, `--tap` 44 px. `review.html` with the same campaign, dates, positions and A01–A04 people as Nhân's pages, a long-named applicant for A05 (Tôn Nữ Hoàng Phương Thảo Nguyên, Rejected), statistics 5/4/4/1, CV + motivation + internal note + Shortlist/Reject for every application, and a relative link to `schedule.html`. The top navigation wraps to full width at 360 px, which removes the nav item past the right edge that Nhân's earlier review noted.
+Changed: Replaced the hard-coded `4px` accent borders with `var(--space-1)` so the stylesheet stays on the scale.
+Rejected: A table for the application list (it would need a horizontal scroll wrapper at 360 px); cards were used instead.
+Checks: A Playwright script loaded each page from the folder with JavaScript disabled at 360/768/1280 px: `clientWidth` equalled the width, `scrollWidth > clientWidth` was `false`, nothing outside the timetable's scroll wrapper passed the right edge, no standalone control was under 44 px, one `h1` per page, and every link target exists. W3C Nu checker: 0 errors, 0 warnings for all three pages (`checks/`). Commits `2c991ff` and `ad00156`.
+
+## 2026-11-09 — responsive pass
+Tool: Claude Code.
+Asked for: Fix whatever the 360/768/1280 checks found.
+Kept: Layout and breakpoints unchanged.
+Changed: The text-size check at 360 px listed 14 px text on badges, eyebrows, kickers and section numbers on all three pages (`--text-xs: 0.875rem`). Raised `--text-xs` to 1rem; the re-run listed no text under 16 px. Commit `10d5138`; screenshots retaken in `8fb9673`.
+Rejected: Hiding the timetable's overflow at 360 px; it keeps scrolling inside `.table-wrap`, which the rubric allows.
+Checks: Same script re-run: all nine page/width combinations pass; contrast computed for every colour pair in `styles.css` (lowest 5.75:1, danger badge).
+
+## 2026-11-09 — "View detail" links did not open the application
+Tool: Claude Code.
+Asked for: Verify the claims written into `PROTOTYPE.md`.
+Kept: Native `<details>` for each application.
+Changed: A click test with JavaScript off showed that "Xem chi tiết A03" scrolled to A03 but left it closed, because the fragment id was on the `<details>` element itself. Moved each `id="detail-a0x"` onto the `.detail-body` inside its `<details>`; Chrome then opens it. Re-ran W3C (0 errors) and the width checks. Commit `570676a`.
+Rejected: A sentence the assistant first wrote in `PROTOTYPE.md` claiming the brief's own screen shows the detail as an overlay — nobody on Dũng's side had read the source screen, so it was removed.
+Checks: Click test reports A03 open after the link; W3C result in `checks/validator-review.txt`.

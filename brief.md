@@ -140,3 +140,13 @@ User prompt (verbatim):
 3. **Vai trò người phỏng vấn được mô tả chưa đúng.** Trang lịch gọi họ là “thành viên Executive”, trong khi brief nguồn phân biệt **Executive** và **Interviewer** là hai vai trò. Nên mô tả họ là người phỏng vấn được CLB phân công, đủ chuyên môn cho vị trí. [schedule.html (line 38)](D:/24127094/WebDev/project/clubflow/schedule.html:38) D:\24127094\WebDev\project\ClubFlow-final-project-brief.pdf
 
 Ngoài phần logic, ở **360 px** thanh điều hướng của cả ba trang vẫn có một mục vượt mép phải. Toàn trang không cuộn ngang, nhưng phép kiểm tra phần tử vượt mép của rubric vẫn phát hiện mục đó.
+
+### Follow-up prompts — Tạ Đức Dũng's session (Claude Code), in order
+
+These are Dũng's prompts, copied verbatim. The assistant also read `AGENTS.md` and this `brief.md` from the repository and followed them as the specification for `review.html`, `styles.css` and `PROTOTYPE.md`.
+
+1. With a screenshot of the empty GitHub repository page: `setup cho toi`
+2. With screenshots of the PA#2 assignment, the full rubric, and the team task table for Dũng (review.html with A01–A05, statistics, search/filter/sort, CV and motivation per application, internal note, Shortlisted/Rejected, link to schedule.html; shared styles.css usable at 360/768/1280 px with no sideways scroll, 44 px targets at 360 px, text and contrast per rubric; PROTOTYPE.md; screenshots/ and checks/; AI-LOG.md; a review.html commit and a separate responsive-pass commit): `/ak:brainstorm brainstorm đề bài này cho tôi`
+3. Answers to the assistant's questions (has Nhân committed? which CSS? where is the brief? team? backup copy?): `1) Nhân chưa 2) CSS 3) https://drive.google.com/file/d/1BX2bYAWW2HS9bNyYMbyLW1J0fyvKtA2l/view 4) 2 người, mssv tí điền 5) cứ làm bản mới đi`
+4. `dùng chrome mở link đi`
+5. `repo mới được bạn kia commit đó, xử lý đi`
