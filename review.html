@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Duyệt đơn ứng tuyển | ClubFlow</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="review-page">
+  <a class="skip-link" href="#main-content">Bỏ qua điều hướng</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">C</span><span>ClubFlow</span></div>
+      <nav class="top-nav" aria-label="Điều hướng chính">
+        <a href="index.html">1. Tạo chiến dịch</a>
+        <span class="nav-current" aria-current="page">2. Duyệt đơn</span>
+        <a href="schedule.html">3. Xếp lịch</a>
+      </nav>
+      <span class="role-pill">Executive workspace</span>
+    </div>
+  </header>
+
+  <main id="main-content" class="shell main-content">
+    <div class="breadcrumb">CLB Công nghệ và Sáng tạo <span aria-hidden="true">/</span> Tuyển thành viên <span aria-hidden="true">/</span> Duyệt đơn ứng tuyển</div>
+
+    <section class="page-intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">TUYỂN THÀNH VIÊN CLB CÔNG NGHỆ MÙA THU 2026 <span class="eyebrow-dot" aria-hidden="true">•</span> ĐÃ ĐÓNG NHẬN ĐƠN</p>
+        <h1 id="page-title">Duyệt đơn ứng tuyển</h1>
+        <p class="lead">Nhận đơn từ 20/10/2026 đến 05/11/2026. Mỗi đơn được xét riêng theo vị trí; chỉ đơn Shortlisted được chuyển sang xếp lịch phỏng vấn ngày 10/11/2026.</p>
+      </div>
+      <span class="intro-badge">05 / 05 đơn đã xét</span>
+    </section>
+
+    <section aria-labelledby="stats-heading">
+      <h2 id="stats-heading" class="visually-hidden">Thống kê đơn ứng tuyển</h2>
+      <div class="review-stats">
+        <div class="stat-card"><span>Tổng số đơn</span><strong>05</strong><small>A01–A05</small></div>
+        <div class="stat-card"><span>Ứng viên</span><strong>04</strong><small>A01 và A02 cùng một sinh viên</small></div>
+        <div class="stat-card stat-shortlisted"><span>Shortlisted</span><strong>04</strong><small>A01, A02, A03, A04</small></div>
+        <div class="stat-card stat-rejected"><span>Rejected</span><strong>01</strong><small>A05</small></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="filter-heading">
+      <div class="review-section-head">
+        <div>
+          <h2 id="filter-heading">Tìm và lọc đơn</h2>
+          <p>Hiển thị 5 / 5 đơn, sắp xếp theo thời gian nộp mới nhất.</p>
+        </div>
+        <button class="button button-secondary" type="button" disabled>Xuất CSV</button>
+      </div>
+      <form class="review-toolbar" action="review.html" method="get" role="search">
+        <div class="tool-field">
+          <label for="search">Tìm theo tên ứng viên hoặc mã đơn</label>
+          <input id="search" name="q" type="search" placeholder="Ví dụ: A03 hoặc Trần Quang Huy">
+        </div>
+        <div class="tool-field">
+          <label for="status-filter">Trạng thái</label>
+          <select id="status-filter" name="status">
+            <option value="all" selected>Tất cả</option>
+            <option value="shortlisted">Shortlisted</option>
+            <option value="rejected">Rejected</option>
+            <option value="pending">Chờ xét</option>
+          </select>
+        </div>
+        <div class="tool-field">
+          <label for="position-filter">Vị trí</label>
+          <select id="position-filter" name="position">
+            <option value="all" selected>Tất cả vị trí</option>
+            <option value="content">Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng</option>
+            <option value="event">Điều phối viên Sự kiện</option>
+            <option value="design">Thiết kế Trải nghiệm</option>
+          </select>
+        </div>
+        <div class="tool-field">
+          <label for="sort">Sắp xếp</label>
+          <select id="sort" name="sort">
+            <option value="newest" selected>Nộp mới nhất</option>
+            <option value="oldest">Nộp sớm nhất</option>
+            <option value="name">Tên ứng viên A–Z</option>
+          </select>
+        </div>
+        <button class="button button-primary" type="submit">Áp dụng</button>
+      </form>
+      <p class="prototype-note">Bản HTML tĩnh luôn hiển thị đủ 5 đơn mẫu: Áp dụng chỉ tải lại trang này, chưa lọc hay sắp xếp dữ liệu. Xuất CSV là nút minh họa.</p>
+    </section>
+
+    <div class="review-layout">
+      <section class="panel" aria-labelledby="list-heading">
+        <div class="review-section-head">
+          <div>
+            <h2 id="list-heading">Danh sách đơn</h2>
+            <p>Chọn “Xem chi tiết” để mở CV và lời trình bày của từng đơn.</p>
+          </div>
+        </div>
+        <ul class="app-list">
+          <li class="app-card">
+            <div class="app-card-top"><span class="app-id">A05</span><span class="status-badge status-rejected">Rejected</span></div>
+            <h3>Tôn Nữ Hoàng Phương Thảo Nguyên</h3>
+            <p class="app-meta">Điều phối viên Sự kiện · nộp 04/11/2026 21:15</p>
+            <a class="button button-secondary" href="#detail-a05">Xem chi tiết A05</a>
+          </li>
+          <li class="app-card">
+            <div class="app-card-top"><span class="app-id">A04</span><span class="status-badge status-shortlisted">Shortlisted</span></div>
+            <h3>Lê Hoàng Phúc</h3>
+            <p class="app-meta">Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng · nộp 01/11/2026 09:40</p>
+            <a class="button button-secondary" href="#detail-a04">Xem chi tiết A04</a>
+          </li>
+          <li class="app-card">
+            <div class="app-card-top"><span class="app-id">A03</span><span class="status-badge status-shortlisted">Shortlisted</span></div>
+            <h3>Trần Quang Huy</h3>
+            <p class="app-meta">Thiết kế Trải nghiệm · nộp 28/10/2026 14:05</p>
+            <a class="button button-secondary" href="#detail-a03">Xem chi tiết A03</a>
+          </li>
+          <li class="app-card">
+            <div class="app-card-top"><span class="app-id">A02</span><span class="status-badge status-shortlisted">Shortlisted</span></div>
+            <h3>Nguyễn Thị Minh Anh</h3>
+            <p class="app-meta">Điều phối viên Sự kiện · nộp 23/10/2026 20:30</p>
+            <a class="button button-secondary" href="#detail-a02">Xem chi tiết A02</a>
+          </li>
+          <li class="app-card">
+            <div class="app-card-top"><span class="app-id">A01</span><span class="status-badge status-shortlisted">Shortlisted</span></div>
+            <h3>Nguyễn Thị Minh Anh</h3>
+            <p class="app-meta">Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng · nộp 22/10/2026 19:10</p>
+            <a class="button button-secondary" href="#detail-a01">Xem chi tiết A01</a>
+          </li>
+        </ul>
+        <div class="list-footer">
+          <p>Trang 1 / 1 · 5 đơn</p>
+          <div class="action-row">
+            <button class="button button-secondary" type="button" disabled>Trang trước</button>
+            <button class="button button-secondary" type="button" disabled>Trang sau</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="detail-heading">
+        <div class="review-section-head">
+          <div>
+            <h2 id="detail-heading">Chi tiết đơn</h2>
+            <p>Mỗi quyết định chỉ áp dụng cho một đơn; A01 và A02 của cùng sinh viên được xét riêng.</p>
+          </div>
+        </div>
+        <div class="detail-list">
+          <details class="app-detail" id="detail-a01" open>
+            <summary>A01 · Nguyễn Thị Minh Anh <span class="status-badge status-shortlisted">Shortlisted</span></summary>
+            <div class="detail-body">
+              <h3>Thông tin CV</h3>
+              <dl>
+                <div><dt>Vị trí ứng tuyển</dt><dd>Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng</dd></div>
+                <div><dt>Thời gian nộp</dt><dd>22/10/2026 19:10</dd></div>
+                <div><dt>Ngành, năm học</dt><dd>Báo chí và Truyền thông, năm 2</dd></div>
+                <div><dt>Kinh nghiệm</dt><dd>Biên tập viên fanpage khoa trong 1 năm; viết 12 bài giới thiệu dự án sinh viên.</dd></div>
+                <div><dt>Kỹ năng</dt><dd>Viết bài, phỏng vấn nhân vật, Canva, quay dựng video ngắn.</dd></div>
+                <div><dt>Tệp CV</dt><dd>cv-nguyen-thi-minh-anh.pdf (tên tệp mẫu, chưa mở được)</dd></div>
+              </dl>
+              <h3>Lời trình bày</h3>
+              <blockquote class="motivation"><p>Em muốn kể lại câu chuyện của các bạn làm dự án công nghệ để nhiều sinh viên năm nhất dám tham gia hơn. Em có thể dành 5 giờ mỗi tuần và quen làm việc theo hạn đăng bài.</p></blockquote>
+              <div class="field">
+                <label for="note-a01">Ghi chú nội bộ (chỉ Executive xem)</label>
+                <textarea id="note-a01" name="note-a01" rows="3">Bài mẫu viết tốt, có kinh nghiệm thực tế. Cùng ứng tuyển A02 – lưu ý khi xếp lịch để hai buổi không trùng giờ.</textarea>
+              </div>
+              <div class="action-row">
+                <button class="button button-primary" type="button" disabled>Shortlist Candidate</button>
+                <button class="button button-danger" type="button" disabled>Reject</button>
+              </div>
+              <p class="decision-note">Quyết định hiện tại: Shortlisted. Quyết định này không thay đổi đơn A02.</p>
+            </div>
+          </details>
+
+          <details class="app-detail" id="detail-a02">
+            <summary>A02 · Nguyễn Thị Minh Anh <span class="status-badge status-shortlisted">Shortlisted</span></summary>
+            <div class="detail-body">
+              <h3>Thông tin CV</h3>
+              <dl>
+                <div><dt>Vị trí ứng tuyển</dt><dd>Điều phối viên Sự kiện</dd></div>
+                <div><dt>Thời gian nộp</dt><dd>23/10/2026 20:30</dd></div>
+                <div><dt>Ngành, năm học</dt><dd>Báo chí và Truyền thông, năm 2</dd></div>
+                <div><dt>Kinh nghiệm</dt><dd>Hậu cần cho ngày hội tân sinh viên 2025, phụ trách 15 tình nguyện viên.</dd></div>
+                <div><dt>Kỹ năng</dt><dd>Lập kế hoạch, giao tiếp với nhà tài trợ, Google Sheets.</dd></div>
+                <div><dt>Tệp CV</dt><dd>cv-nguyen-thi-minh-anh-su-kien.pdf (tên tệp mẫu, chưa mở được)</dd></div>
+              </dl>
+              <h3>Lời trình bày</h3>
+              <blockquote class="motivation"><p>Em thích không khí chuẩn bị sự kiện và muốn học cách điều phối một chương trình từ đầu đến cuối cùng các anh chị trong ban.</p></blockquote>
+              <div class="field">
+                <label for="note-a02">Ghi chú nội bộ (chỉ Executive xem)</label>
+                <textarea id="note-a02" name="note-a02" rows="3">Kinh nghiệm hậu cần phù hợp. Đơn này được xét độc lập với A01.</textarea>
+              </div>
+              <div class="action-row">
+                <button class="button button-primary" type="button" disabled>Shortlist Candidate</button>
+                <button class="button button-danger" type="button" disabled>Reject</button>
+              </div>
+              <p class="decision-note">Quyết định hiện tại: Shortlisted. Quyết định này không thay đổi đơn A01.</p>
+            </div>
+          </details>
+
+          <details class="app-detail" id="detail-a03">
+            <summary>A03 · Trần Quang Huy <span class="status-badge status-shortlisted">Shortlisted</span></summary>
+            <div class="detail-body">
+              <h3>Thông tin CV</h3>
+              <dl>
+                <div><dt>Vị trí ứng tuyển</dt><dd>Thiết kế Trải nghiệm</dd></div>
+                <div><dt>Thời gian nộp</dt><dd>28/10/2026 14:05</dd></div>
+                <div><dt>Ngành, năm học</dt><dd>Thiết kế Đồ họa, năm 3</dd></div>
+                <div><dt>Kinh nghiệm</dt><dd>Thiết kế poster và giao diện đăng ký cho 3 workshop của khoa.</dd></div>
+                <div><dt>Kỹ năng</dt><dd>Figma, Illustrator, nghiên cứu người dùng cơ bản.</dd></div>
+                <div><dt>Tệp CV</dt><dd>portfolio-tran-quang-huy.pdf (tên tệp mẫu, chưa mở được)</dd></div>
+              </dl>
+              <h3>Lời trình bày</h3>
+              <blockquote class="motivation"><p>Mình muốn làm cho thông tin hoạt động của CLB dễ đọc hơn trên điện thoại, vì đa số sinh viên xem thông báo trên đó.</p></blockquote>
+              <div class="field">
+                <label for="note-a03">Ghi chú nội bộ (chỉ Executive xem)</label>
+                <textarea id="note-a03" name="note-a03" rows="3">Portfolio rõ ràng, có sản phẩm thật. Ưu tiên phỏng vấn với Ban Thiết kế.</textarea>
+              </div>
+              <div class="action-row">
+                <button class="button button-primary" type="button" disabled>Shortlist Candidate</button>
+                <button class="button button-danger" type="button" disabled>Reject</button>
+              </div>
+              <p class="decision-note">Quyết định hiện tại: Shortlisted.</p>
+            </div>
+          </details>
+
+          <details class="app-detail" id="detail-a04">
+            <summary>A04 · Lê Hoàng Phúc <span class="status-badge status-shortlisted">Shortlisted</span></summary>
+            <div class="detail-body">
+              <h3>Thông tin CV</h3>
+              <dl>
+                <div><dt>Vị trí ứng tuyển</dt><dd>Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng</dd></div>
+                <div><dt>Thời gian nộp</dt><dd>01/11/2026 09:40</dd></div>
+                <div><dt>Ngành, năm học</dt><dd>Ngôn ngữ Anh, năm 1</dd></div>
+                <div><dt>Kinh nghiệm</dt><dd>Viết blog cá nhân về sách; cộng tác viên bản tin lớp.</dd></div>
+                <div><dt>Kỹ năng</dt><dd>Viết song ngữ Việt – Anh, chụp ảnh sự kiện.</dd></div>
+                <div><dt>Tệp CV</dt><dd>cv-le-hoang-phuc.pdf (tên tệp mẫu, chưa mở được)</dd></div>
+              </dl>
+              <h3>Lời trình bày</h3>
+              <blockquote class="motivation"><p>Em muốn viết bài song ngữ để các bạn sinh viên quốc tế cũng theo dõi được hoạt động của CLB.</p></blockquote>
+              <div class="field">
+                <label for="note-a04">Ghi chú nội bộ (chỉ Executive xem)</label>
+                <textarea id="note-a04" name="note-a04" rows="3">Chỉ rảnh 10:00–11:00 ngày phỏng vấn; cần kiểm tra lịch người phỏng vấn Ban Nội dung.</textarea>
+              </div>
+              <div class="action-row">
+                <button class="button button-primary" type="button" disabled>Shortlist Candidate</button>
+                <button class="button button-danger" type="button" disabled>Reject</button>
+              </div>
+              <p class="decision-note">Quyết định hiện tại: Shortlisted. Shortlisted chưa có nghĩa là đã trúng tuyển hay đã có lịch phỏng vấn.</p>
+            </div>
+          </details>
+
+          <details class="app-detail" id="detail-a05">
+            <summary>A05 · Tôn Nữ Hoàng Phương Thảo Nguyên <span class="status-badge status-rejected">Rejected</span></summary>
+            <div class="detail-body">
+              <h3>Thông tin CV</h3>
+              <dl>
+                <div><dt>Vị trí ứng tuyển</dt><dd>Điều phối viên Sự kiện</dd></div>
+                <div><dt>Thời gian nộp</dt><dd>04/11/2026 21:15</dd></div>
+                <div><dt>Ngành, năm học</dt><dd>Kỹ thuật Phần mềm, năm 1</dd></div>
+                <div><dt>Kinh nghiệm</dt><dd>Chưa tham gia tổ chức sự kiện.</dd></div>
+                <div><dt>Kỹ năng</dt><dd>Lập trình web cơ bản, thuyết trình.</dd></div>
+                <div><dt>Tệp CV</dt><dd>cv-ton-nu-hoang-phuong-thao-nguyen.pdf (tên tệp mẫu, chưa mở được)</dd></div>
+              </dl>
+              <h3>Lời trình bày</h3>
+              <blockquote class="motivation"><p>Em muốn thử sức ở vị trí mới, nhưng học kỳ này em chỉ tham gia được các buổi online.</p></blockquote>
+              <div class="field">
+                <label for="note-a05">Ghi chú nội bộ (chỉ Executive xem)</label>
+                <textarea id="note-a05" name="note-a05" rows="3">Vị trí yêu cầu có mặt trực tiếp tại sự kiện; ứng viên chỉ tham gia online. Gợi ý mời ứng tuyển lại đợt sau.</textarea>
+              </div>
+              <div class="action-row">
+                <button class="button button-primary" type="button" disabled>Shortlist Candidate</button>
+                <button class="button button-danger" type="button" disabled>Reject</button>
+              </div>
+              <p class="decision-note">Quyết định hiện tại: Rejected. Đơn này không được chuyển sang xếp lịch.</p>
+            </div>
+          </details>
+        </div>
+        <p class="prototype-note">Shortlist Candidate, Reject và ô ghi chú là giao diện minh họa: bản HTML tĩnh không lưu quyết định hay ghi chú.</p>
+      </section>
+    </div>
+
+    <section class="panel next-step" aria-labelledby="next-heading">
+      <h2 id="next-heading">Bước tiếp theo: xếp lịch phỏng vấn</h2>
+      <p>4 đơn Shortlisted (A01–A04) sẽ được xếp lịch ngày 10/11/2026. A05 đã Rejected nên không có trong lịch.</p>
+      <a class="button button-link" href="schedule.html">Xếp lịch cho 4 đơn Shortlisted <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="shell footer-inner"><span>ClubFlow · Mẫu giao diện tuyển thành viên</span><span>Chiến dịch Mùa Thu 2026</span></div></footer>
+</body>
+</html>
