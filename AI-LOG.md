@@ -1,6 +1,9 @@
-# AI-LOG.md — ClubFlow PA#2
+# ClubFlow AI Log
 
-Trịnh Duy Nhân - 24217094
+Trịnh Duy Nhân — 24127094
+Tạ Đức Dũng — 24127347
+
+## PA#2
 
 ## 2026-11-08 — reviewing the assignment documents
 Tool: Codex.
@@ -170,3 +173,47 @@ Kept: Native `<details>` for each application.
 Changed: A click test with JavaScript off showed that "Xem chi tiết A03" scrolled to A03 but left it closed, because the fragment id was on the `<details>` element itself. Moved each `id="detail-a0x"` onto the `.detail-body` inside its `<details>`; Chrome then opens it. Re-ran W3C (0 errors) and the width checks. Commit `570676a`.
 Rejected: A sentence the assistant first wrote in `PROTOTYPE.md` claiming the brief's own screen shows the detail as an overlay — nobody on Dũng's side had read the source screen, so it was removed.
 Checks: Click test reports A03 open after the link; W3C result in `checks/validator-review.txt`.
+
+## PA#3
+
+## 2026-11-23 - consolidating project and milestone requirements
+
+Tool: Codex (PDF review, repository inspection, requirements analysis, and file editing).
+
+Asked for: Write the project requirements and describe the work required in each PA.
+
+Kept: The official ClubFlow scope, C1-F11 feature flow, shared sample timeline, role and ownership boundaries, scheduling and confirmation rules, milestone weights/deadlines, rubric criterion totals, and the repository's current PA#3 contract-first/harness direction.
+
+Changed: Added `REQUIREMENTS.md` as a consolidated English reference covering product goals, users, in/out-of-scope boundaries, features, business rules, non-functional requirements, PA#1-PA#6 work and deliverables, rubric summaries, cross-milestone dependencies, shared submission rules, source limitations, and the current PA#3 priorities. Normalized the milestone headings to `## PA#2` and `## PA#3` without changing historical entries.
+
+Rejected: Inventing detailed PA#1 or PA#3 rubric requirements that are not present in the workspace, treating PA#3 mock behavior as real backend enforcement, or describing PA#5 harness history as work that can be reconstructed at the deadline.
+
+Checks: Re-read the PA#2 rubric and cross-checked the consolidated requirements against the ClubFlow brief, final milestones summary, and PA#4-PA#6 rubrics already reviewed. Confirmed every milestone PA#1-PA#6 is represented, criterion totals add to 100 where listed, and the document distinguishes authoritative rubrics from summary-only information. No commit or push was made.
+
+## 2026-11-23 - restoring the PA#2 project rules
+
+Tool: Codex (Git inspection and file restoration).
+
+Asked for: Restore `AGENTS.md` to the PA#2 version.
+
+Kept: The exact PA#2 rules stored at `HEAD`, including static HTML/CSS constraints, original ownership, sample data, responsive and semantic requirements, never-list, and PA#2 definition of done.
+
+Changed: Replaced the uncommitted PA#3 version of `AGENTS.md` with the committed PA#2 content. The first `git restore` attempt could not create `.git/index.lock` because the sandbox has read-only Git metadata, so the same `HEAD` content was restored through a direct workspace patch instead.
+
+Rejected: Reverting `AI-LOG.md`, deleting `REQUIREMENTS.md`, or changing any PA2 implementation/evidence file; the request named only `AGENTS.md`.
+
+Checks: Compared `AGENTS.md` with `HEAD`; no file diff remains for `AGENTS.md`. No commit or push was made.
+
+## 2026-11-23 - preparing PA#3 documentation progress for review
+
+Tool: Codex (document review, Git branching, selective staging, and commit verification).
+
+Asked for: Fix the identified documentation inconsistencies, split the current progress into clean commits, and push it on `pa3/requirements` without changing `main`.
+
+Kept: `main` as the PA#2 baseline, the restored PA#2 `AGENTS.md`, the cumulative PA#2 log entries, and the two-commit separation between project requirements and the AI log.
+
+Changed: Added both team members and correct student IDs to the log header, corrected the PA#3 priority statement so it no longer claims that PA#3 rules are already current, created branch `pa3/requirements`, and committed only `REQUIREMENTS.md` as `38ebe97` (`docs(project): add consolidated requirements and milestone guide`).
+
+Rejected: Staging `AGENTS.md`, committing directly on `main`, combining requirements and AI-log changes in one commit, or merging the documentation branch into `main` during this task.
+
+Checks: `AGENTS.md` matches `HEAD`; the first commit contains only `REQUIREMENTS.md`; `git diff --check` passes after removing trailing whitespace from the team metadata. The AI-log commit and remote branch are verified separately after this entry is written.
