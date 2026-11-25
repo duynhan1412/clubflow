@@ -217,3 +217,17 @@ Changed: Added both team members and correct student IDs to the log header, corr
 Rejected: Staging `AGENTS.md`, committing directly on `main`, combining requirements and AI-log changes in one commit, or merging the documentation branch into `main` during this task.
 
 Checks: `AGENTS.md` matches `HEAD`; the first commit contains only `REQUIREMENTS.md`; `git diff --check` passes after removing trailing whitespace from the team metadata. The AI-log commit and remote branch are verified separately after this entry is written.
+
+## 2026-11-25 - dividing PA#3 work (Tạ Đức Dũng — 24127347)
+
+Tool: Claude Code (Claude Opus 5.5).
+
+Asked for: `bạn tôi vừa push requirements đồ án lên, chia task thử cho tôi đi` (divide the work in the requirements Nhân pushed), then `tạo một branch mới, đẩy plan này lên cho tôi đi` (push the plan on a new branch).
+
+Kept: The PA#3 scope, rubric weights, deadline, and contract-first order from `REQUIREMENTS.md` on `origin/pa3/requirements`; the PA#2 ownership split (Nhân: campaign and scheduling; Dũng: review and styles).
+
+Changed: Added `PA3-PLAN.md` on branch `pa3/task-plan` (based on `pa3/requirements`) as a proposal: shared foundation owners, C1–C11 slices per member, a day-by-day schedule to 2026-11-30, and risks. Wrote it in English to match the other repository documents, although the plan was first given in Vietnamese in chat.
+
+Rejected: Treating the plan as agreed (it is marked as a proposal), editing Nhân's `brief.md` or `AGENTS.md`, and merging into `main`.
+
+Checks: `git fetch` found the new remote branch `pa3/requirements`; no PA#3 rubric or contract checker exists in the repository or its parent folder, which the plan lists as the first task.
