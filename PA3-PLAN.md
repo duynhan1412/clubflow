@@ -14,13 +14,13 @@ Deadline: 2026-11-30 22:00. Target ZIP time: 2026-11-30 18:00 (a submission unde
 
 | Work | Owner |
 |---|---|
-| Get the detailed PA#3 rubric, the contract checker, and its run command from Classroom (missing from the repository, see `REQUIREMENTS.md` §11) | Both, first |
+| Review the official PA#3 rubric and checker supplied from Classroom (see `REQUIREMENTS.md` §11 for how to run it) | Both |
 | `AGENTS.md` for PA#3: React/Vite stack, contract-first workflow, new ownership, never-list; commit before any code (`main` still holds the PA#2 version) | Nhân |
 | PA#3 `brief.md`; each member appends their own real prompts | Nhân owns the file |
-| Shared data catalogue `mock/data.mjs`: reuse the PA#2 campaign and A01–A05, add demo accounts for the three roles, interviewers, and rooms | Nhân |
+| Shared data catalogue: reuse the PA#2 campaign and A01–A05, add demo accounts for the three roles, interviewers, and rooms. Move submitted fixtures under `mock/data/` from the draft `mock/data.mjs`. | Nhân |
 | `docs/api/README.md`: one error shape, auth header, mock-mode selection, route map, `## Changes` section | Nhân |
 | `client/` Vite + React + router; API client for relative `/api` requests; shared loading / error + Retry / empty / success component | Dũng |
-| `mock/server.mjs` on Node built-ins with `normal`, `slow`, `error`, and `empty` modes; Vite `/api` proxy | Dũng |
+| `mock/server.mjs` on Node built-ins with the four `MOCK_MODE` values and restart-safe demo tokens. Vite `/api` proxy for both dev and preview. | Dũng |
 | Formatter, linter, and CI on every push; PA#5 (gates: 25 points) needs real red-to-green CI history, so it starts now | Nhân |
 
 ## 3. Feature slices C1–C11
@@ -51,7 +51,7 @@ Throughout: log every assistant task in `AI-LOG.md` as it happens and copy real 
 
 ## 5. Risks
 
-- **Contract checker not yet available.** It may dictate the `docs/api/` format (for example fenced `http` examples). Get it before writing the contract on 11-26, or the contract will be rewritten.
+- **Checker examples share state.** Document every endpoint and plan state-changing examples in file order for a freshly started mock. Agree on the `FRONTEND.md` demo aliases and seed data before writing protected examples.
 - **Mock uses Node built-ins only.** Keep the CV upload simple: check the `%PDF` signature and the 5 MB limit.
 - **The contract binds PA#4** (due 2026-12-07). Any later change goes under `## Changes` before the implementation changes.
 - **Late penalty.** Package the ZIP by 18:00 on 2026-11-30.

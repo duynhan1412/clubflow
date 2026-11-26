@@ -231,3 +231,59 @@ Changed: Added `PA3-PLAN.md` on branch `pa3/task-plan` (based on `pa3/requiremen
 Rejected: Treating the plan as agreed (it is marked as a proposal), editing Nhân's `brief.md` or `AGENTS.md`, and merging into `main`.
 
 Checks: `git fetch` found the new remote branch `pa3/requirements`; no PA#3 rubric or contract checker exists in the repository or its parent folder, which the plan lists as the first task.
+
+## 2026-11-26 - preparing the PA#3 shared foundation
+
+Tool: Codex (workspace inspection and file editing).
+
+Asked for: `cập nhật AGENTS.md, chuẩn bị dữ liêu và API README, không commit`
+
+Kept: PA#2 sample records and the PA#3 ownership and contract-first workflow from the task plan.
+
+Changed: Updated `AGENTS.md` and prepared the shared mock data and API README.
+
+Rejected: Treating the proposed API conventions as final or implementing the mock runner and React client as part of this task.
+
+Checks: Cross-referenced the source HTML, task plan and requirements. The official contract checker is pending. No commit or push was made.
+
+## 2026-11-26 - aligning the API documentation with the official rubric
+
+Tool: Codex (rubric extraction, checker source review and repository documentation edits).
+
+Asked for: `cập nhật readme và các tài liệu liên quan`
+
+Kept: Proposed routes, shared error fields and the existing team ownership.
+
+Changed: Updated `docs/api/README.md`, `AGENTS.md`, `REQUIREMENTS.md` and `PA3-PLAN.md` to document checker-readable endpoint rows, runnable response examples, the official mock modes, restart-safe tokens and the required fixture directory.
+
+Rejected: The earlier header-based mock mode, 422 field validation, 503 simulated failures and an unpaired HTTP response block. The official rubric and checker source exposed the differences.
+
+Checks: Compared the endpoint table and example conventions with the checker parser and rubric. The checker needs per-resource examples and a running mock for an end-to-end run. No commit or push was made.
+
+## 2026-11-26 - preparing the PA#3 brief
+
+Tool: Codex (repository review and Markdown editing).
+
+Asked for: `cập nhật brief thành brief cho PA3`
+
+Kept: Verbatim PA#3 work prompts available from the conversation and task-plan log, the team split, and the shared PA#2 example timeline.
+
+Changed: Replaced the static PA#2 brief with the PA#3 prompt record and a prepared implementation handoff covering C1–C11, the API boundary, form behavior and checks.
+
+Rejected: Presenting the prepared handoff as a prompt already sent, reconstructing unavailable prompts from log summaries, or claiming implementation checks had passed.
+
+Checks: Read the ownership rules and compared the handoff with the PA#3 rubric and shared API README. No commit or push was made.
+
+## 2026-11-26 - reviewing the shared decisions and preparing the documentation commit
+
+Tool: Codex (Git inspection and review of the task plan, API README and draft fixtures).
+
+Asked for: `commit phần tài liệu và nêu chi tiết hơn những phần cần thống nhất: đã có những đề xuất gì, những điểm mơ hồ`
+
+Kept: The proposed division of work and the distinction between rubric requirements and proposed API choices.
+
+Changed: Recorded the prompt and selected only the PA#3 foundation documents for the requested commit. Identified unresolved decisions about feature boundaries, schedule data, demo accounts and the order of checker examples.
+
+Rejected: Including the draft mock fixture, treating the route table as a final contract, or treating a scheduled agreement as a recorded team decision.
+
+Checks: Inspected the branch, index and working tree, and checked the documentation diff for whitespace errors. No end-to-end checker run was attempted.

@@ -12,7 +12,7 @@ Source precedence:
 4. Product-owner decisions apply where the brief is silent, but they cannot change marks, deadlines, rubrics, or mandatory PA#2 requirements.
 5. `AGENTS.md` and `brief.md` constrain how this repository is developed; they do not override the course documents.
 
-The repository does not currently contain the detailed PA#1 or PA#3 rubric. Their sections below therefore use only the information present in the final-project milestones document and the later rubrics that refer back to PA#3.
+The detailed PA#1 rubric is unavailable. The official Classroom PA#3 rubric and contract checker were supplied separately and inform §11.
 
 ## 2. Product objective
 
@@ -369,16 +369,17 @@ Build the complete C1-C11 front end in React against a written API contract and 
 
 ### Work
 
-- Create a Vite React application in `client/` with a router.
+- Create a Vite React application in `client/` with React Router. Configure the relative `/api` proxy in both Vite development and preview.
 - Implement C1-C11 for Visitor, Executive, Applicant, and Interviewer roles.
 - Implement sign-in, sign-out, protected routes, role homes, and post-sign-in return paths.
 - Read all business data from relative `/api` requests.
 - Show loading, Retry/error, empty, and success states on every API-backed screen.
 - Build and validate forms without discarding valid input after refusal.
-- Write `docs/api/` before consumer code, with one error shape and fenced `http` examples.
-- Implement `mock/server.mjs` using Node built-ins only.
-- Support `normal`, `slow`, `error`, and `empty` modes.
-- Run the provided contract checker and keep contract, mock, and UI aligned.
+- Write `docs/api/` before mock and consumer code. The README lists base path, auth header, shared error shape, status codes, and each method, full path, role and resource file.
+- In each resource file, specify parameters, field types and limits, success responses and applicable errors (400 with field messages for validation). Provide at least one paired request and expected response per endpoint and keep a dated `## Changes` section with reasons for changes.
+- Implement `mock/server.mjs` using Node built-ins only. Default `PORT` to 3001, load fixtures from `mock/data/`, keep changes in memory and log method, path and status per request. The PA#3 mock may use prepared scheduling responses that demonstrate the required states and actions in §5. The product generation rule still applies to the real implementation.
+- Read `MOCK_MODE` at startup. Use about 150 ms for `normal`, about 2 seconds for `slow`, 500 with the shared error shape for `error` except sign-in, and empty lists at every JSON depth for `empty` while keeping single objects available. Keep demo tokens usable across restarts.
+- Start a fresh normal-mode mock and run the Classroom checker from the repository root with `node /path/to/contract-check.mjs --base http://localhost:3001`. It compares status and JSON field names, verifies endpoint coverage and uses `FRONTEND.md` demo aliases for request tokens.
 - Preserve responsive, semantic, and accessible behavior.
 - Build and commit a fresh `client/dist/`.
 
@@ -386,14 +387,14 @@ Build the complete C1-C11 front end in React against a written API contract and 
 
 - `client/` source and `client/dist/`.
 - `docs/api/`.
-- `mock/server.mjs` and supporting built-in-only modules.
-- `FRONTEND.md`.
+- `mock/server.mjs` and `mock/data/`.
+- `FRONTEND.md` with team, run instructions, Demo accounts, routes and their endpoints, product-owner decisions with sources, libraries and unfinished work. Include `exec`, `studentA`, `int-content` and `int-comms` in the demo account aliases. The rubric describes `int-comms` as the Communications interviewer. Reconcile that example with the PA#2 position names before finalizing fixtures.
 - Current `brief.md` and `AGENTS.md`.
 - Cumulative `AI-LOG.md`.
 - `SELF_ASSESSMENT_REPORT.md`.
 - Git history showing contract-first work.
 
-### Rubric summary available in this workspace
+### Rubric summary
 
 | Criterion | Points |
 |---|---:|
@@ -407,9 +408,9 @@ Build the complete C1-C11 front end in React against a written API contract and 
 | AI log | 10 |
 | Commit history | 5 |
 
-### Evidence limitation
+### Official materials
 
-The detailed PA#3 rubric is not present in this workspace. Verify the exact submission instructions and contract-check command against Classroom before submission.
+Use the Classroom files `PA3-rubric-react-front-end.pdf`, `contract-check-README.md` and `contract-check.mjs` for grading details and executable example syntax.
 
 ## 12. PA#4 - Express back end
 

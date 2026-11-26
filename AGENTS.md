@@ -1,54 +1,51 @@
-# ClubFlow project rules
+# ClubFlow PA#3 project rules
 
-## Project
+## Scope
 
-Build the three-page ClubFlow PA#2 prototype in this order: `index.html` (Create Recruitment Campaign) -> `review.html` (Application Review) -> `schedule.html` (Interview Scheduling). Follow the requirements and sample-data constraints in `brief.md`. This repository uses static HTML and CSS.
+- Build C1–C11 in React with Vite and a router in `client/`. Use the PA#2 prototype as the design and sample-data reference.
+- Follow the official PA#3 rubric, then `REQUIREMENTS.md` for product and milestone requirements. Use `PA3-PLAN.md` for the proposed ownership and schedule.
+- Follow the Classroom rubric and checker format summarized in `docs/api/README.md`.
 
-## Stack and ownership
+## Ownership
 
-- Use plain HTML and a local `styles.css` file. Pages must open from the folder without a build step or network connection.
-- Do not add dependencies, a CSS framework, a CDN, or a JavaScript framework. Small JavaScript enhancements are allowed only when all essential content remains visible with JavaScript disabled.
-- Trịnh Duy Nhân owns `index.html`, `schedule.html`, and `brief.md`.
-- Tạ Đức Dũng owns `review.html`, `styles.css`, and `PROTOTYPE.md`.
-- Coordinate before editing a file owned by the other person. Both members review shared data, links, evidence, and final documentation.
+| Member | PA#3 responsibilities |
+| --- | --- |
+| Trịnh Duy Nhân (24127094) | C1, C3, C4, C8, C9 across contract, mock and UI. Owns `AGENTS.md`, `brief.md`, `mock/data.mjs`, `docs/api/README.md`, formatter, linter, CI and final self-assessment. |
+| Tạ Đức Dũng (24127347) | C2, C5–C7, C10, C11 across contract, mock and UI. Owns the React scaffold, router, styles, API client, shared UI states, Vite proxy, mock server runner and `FRONTEND.md`. |
 
-## Shared sample data and scheduling
+Coordinate before editing a teammate's files. Agree on the shared schedule shape before wiring C6, C9, C10 and C11. Both members review shared data, integration and each other's code.
 
-- Use the single campaign dataset specified in `brief.md`: applications open on 2026-10-20, close on 2026-11-05, and interviews take place on 2026-11-10. Keep all submissions within the application period. The campaign has one interview date.
-- Keep IDs, positions, people, application statuses, dates, rooms, and statistics consistent across pages. A01 and A02 are separate applications by one student for different positions; decisions remain application-specific. Applicants and interviewers must be distinct people.
-- Show five reviewed applications from four applicants: A01–A04 Shortlisted and A05 Rejected. Only the four Shortlisted applications appear in scheduling. In the sample draft, A01 and A02 conflict because their shared applicant has overlapping interviews; A03 is Proposed; A04 is Unassigned with a concrete reason. The timetable totals are 1 Proposed, 2 Conflict, and 1 Unassigned.
-- A valid interview requires one qualified interviewer, shared applicant/interviewer availability, a free room, and the campaign's common 15-, 20-, or 30-minute duration. No applicant, interviewer, or room may have overlapping interviews. The intended generation rule is the first valid time-slot/interviewer/room combination in sequence; static HTML must not claim to run that algorithm.
-- Approval requires closed applications, every application reviewed, exactly one valid assignment for each Shortlisted application, and no Conflict or Unassigned rows. Save Changes is draft-only. After confirmation, the campaign configuration, applications, and schedule are read-only; confirmation is not the final recruitment result.
+## Contract, mock and UI
+
+1. Write each slice's resource contracts in `docs/api/`. List every method and full path in the README and pair each executable request with its expected response. Use the shared error shape and add `## Changes` to each file. Git history must place the rules before implementation and each slice's contract before its mock handler and UI.
+2. Implement the mock handler using Node built-ins. Integrate through `mock/server.mjs` and place the submitted fixtures in `mock/data/`.
+3. Connect React through the shared API client using relative `/api` requests. Handle loading, error with Retry, empty and success states. Preserve valid input when a form submission fails.
+4. Record API changes under `## Changes` before updating the implementation. PA#4 inherits the PA#3 contract.
+
+Support all four `MOCK_MODE` values as documented in the API README. Demo tokens must work after a mock restart. Keep screening notes Executive-only, Applicant records owner-scoped and Interviewer interviews and CVs assignment-scoped.
+
+## Business rules
+
+- Keep PA#2 dates, people and IDs consistent. A01 and A02 belong to one applicant and different positions. A01–A04 are Shortlisted and A05 is Rejected. Applicants and interviewers are distinct people.
+- Use one duration for the campaign (15, 20 or 30 minutes). The product rule is to take the first valid slot/interviewer/room combination in sequence for each Shortlisted application or mark it Unassigned. PA#3 may simulate generation with prepared responses. Show correct qualifications, availability and applicant, interviewer and room overlaps after edits.
+- Confirm only after applications close, all applications are reviewed, each Shortlisted application has exactly one valid assignment and no Conflict or Unassigned rows remain. Save Changes keeps a draft. Confirmation locks campaign configuration, application and screening data, and the schedule. Assessments and result publication follow their own rules.
+
+## UI and accessibility
+
+- Build mobile first using the 48rem and 80rem breakpoints and the shared spacing tokens. Check at 360, 768 and 1280 px, including long Vietnamese names and titles.
+- Use semantic landmarks, one logical `h1`, ordered headings, visible labels and keyboard focus. Provide useful alt text. Use links for navigation and buttons for actions.
+- Use at least 16 px for body text and controls, 4.5:1 contrast for body text and buttons, and 44 px standalone targets at 360 px.
 
 ## Never
 
-- Never use broken links, `href="#"`, root-relative page links, or `onclick`-only navigation for the main flow.
-- Never hide essential content when JavaScript is disabled.
-- Never use fixed page or panel widths, or `overflow-x: hidden` to conceal a broken layout.
-- Never use `!important` in project CSS.
-- Never claim backend persistence, university account verification, or other behavior that the prototype does not provide.
-- Never commit or push unless the person requesting the work explicitly asks.
+- Never hard-code business data in React, add mock server dependencies, or claim real account verification, authentication or persistence from the mock.
+- During UI work, call only documented endpoints. Report missing endpoints and get explicit direction before changing a contract or mock to accommodate the UI.
+- Never expose private data across roles or show draft assignments to Applicants or Interviewers.
+- Never use placeholder navigation links, fixed page or panel widths, `overflow-x: hidden` to conceal a broken layout, or `!important` in project CSS.
+- Never manufacture Git or CI history. Never commit or push without explicit authorization.
 
-## HTML and design
+## Delivery
 
-- Use semantic `header`, `nav`, `main`, and `footer` where appropriate.
-- Use one `h1` per page, ordered heading levels, visible associated labels for inputs, and suitable `alt` text for images.
-- Use links for navigation and buttons for actions.
-- Build mobile first with fluid layouts and breakpoints at `48rem` and `80rem`.
-- Use the spacing scale 4, 8, 12, 16, 24, 32, and 48 px through CSS custom properties.
-- Body text must be at least 16 px; body text and buttons must meet 4.5:1 contrast.
-- Standalone buttons and links must be at least 44 px tall at 360 px.
-- Include the viewport meta element on every page and keep every page valid in the W3C Nu checker.
-
-## Definition of done
-
-- Open all three pages directly from the folder with JavaScript disabled and follow every main-flow link.
-- Check each page at 360, 768, and 1280 px with no page-level horizontal scroll, clipped content, or overlap. Test a long name or title at 360 px.
-- Check every item in the ClubFlow brief's Fix these list against the finished pages.
-- Run the W3C Nu checker: zero errors on every page. Inspect headings, labels, and controls in the browser Accessibility pane.
-- Save nine full-page screenshots in `screenshots/` and three validator results in `checks/`.
-- Keep `brief.md` as the actual prompts given to the assistant, in order. Record assistant work and checks in `AI-LOG.md` as the work happens.
-- In `PROTOTYPE.md`, include team names and student IDs, opening instructions, a screen/link table, design choices, controls not wired yet, and the CSS spacing scale and breakpoints. Name every visual-only control rather than implying that it works.
-- Keep `brief.md`, `AI-LOG.md`, `PROTOTYPE.md`, and `SELF_ASSESSMENT_REPORT.md` in English. Log each assistant task with its tool, request, kept work, changes, rejections, and checks while the work happens.
-- Complete `SELF_ASSESSMENT_REPORT.md` with one evidence-backed score for each of the seven rubric criteria, a matching total, and an honest section on unfinished work. Replace its provisional scores and add student IDs before submission.
-- When commits are explicitly authorized, make the first commit include this rules file, then record at least one commit per page and a separate responsive-pass commit. Include `.git` in the final ZIP; use the final self-assessment total in its filename.
+- Check C1–C11 across roles and mock modes. Run the official contract checker, check responsive and accessible behavior and produce a fresh `client/dist/`.
+- Keep project documentation in English except verbatim prompts. Record real PA#3 prompts in `brief.md` and assistant work and checks in the cumulative `AI-LOG.md`.
+- Complete the self-assessment against the official rubric with evidence and unfinished work. Follow the course packaging instructions. PA#3 is due 2026-11-30 at 22:00 (Asia/Saigon).
