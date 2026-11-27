@@ -32,9 +32,43 @@ These prompts are recorded verbatim in order. Append each implementation prompt 
 
 > gộp các AI-LOG mới cập nhật 2 ngày gần đây vào các nhóm cho phù hợp
 
-> kiểm tra đã đủ nội dung commit chưa, chưa commit
+### 2026-11-27 · Trịnh Duy Nhân · Seed validation and organization
 
-> push phần này lên
+> kiểm tra và chỉnh sửa dữ liệu mẫu đã đúng contract chưa
+
+> PLEASE IMPLEMENT THIS PLAN:
+> ### Hoàn thiện dữ liệu mẫu theo quy ước hiện có
+>
+> **Thay đổi**
+>
+> - Chuyển nội dung seed sang `mock/data/seed.mjs`; giữ `mock/data.mjs` làm entry point re-export `createSeedData()` để giữ đường import đã được tài liệu hóa.
+> - Giữ nguyên dữ liệu nghiệp vụ và lịch Draft hiện tại; không tự sửa các conflict hoặc mở rộng availability của interviewer trong seed.
+> - Cập nhật API README để phân biệt dữ liệu lưu nội bộ với response API. Ghi thay đổi vị trí fixture trong `## Changes`.
+> - Ghi prompt và kết quả kiểm tra thực tế vào `brief.md`, `AI-LOG.md`.
+>
+> **Kiểm tra**
+>
+> - Chạy lại kiểm tra ID duy nhất, tham chiếu, alias, ngày nộp, trạng thái, qualification, availability và thời lượng.
+> - Xác nhận blocker ban đầu vẫn là A01, A02, A04; hai lần tạo seed không chia sẻ dữ liệu mutable.
+> - Kiểm tra đường import cũ hoạt động và `git diff --check` đạt.
+>
+> **Giới hạn và mặc định**
+>
+> - Chỉ chỉnh tổ chức fixture; chưa thêm trường response, token, PDF hay handler khi chưa có contract tương ứng.
+> - Chưa xác nhận API end-to-end hoặc phân quyền bằng kiểm tra seed.
+> - Không commit hoặc push.
+
+### 2026-11-27 · Trịnh Duy Nhân · C1/C3/C4 resource contracts
+
+> tạo contract C1, C3, C4
+
+Planning choices: allow a separate Draft alongside the existing Published campaign; allow constrained Published edits before schedule confirmation. The approved plan defines two resource documents, seed-preserving checker examples and documentation-only changes.
+
+> Please implement the plan.
+
+### 2026-11-27 · API contract review
+
+> kiểm tra các contract api đánh giá mức độ phù hợp với yêu cầu project và tài liệu PA3
 
 ## Handoff for future implementation prompts
 

@@ -349,3 +349,127 @@ Changed: Recorded the request and prepared the four documentation files for a co
 Rejected: Including the untracked mock fixture in the documentation commit.
 
 Checks: Confirmed the branch and remote, confirmed the index was empty and checked the documentation diff for whitespace errors before staging.
+
+### Seed validation and organization
+
+#### 2026-11-27 - validating and relocating the shared fixtures
+
+Tool: Codex (repository inspection, Node built-in assertions, fixture relocation and Markdown edits).
+
+Asked for: `kiểm tra và chỉnh sửa dữ liệu mẫu đã đúng contract chưa`, followed by `PLEASE IMPLEMENT THIS PLAN:` and the full implementation plan recorded verbatim in `brief.md`.
+
+Kept: All seed business data, the intentional A01/A02 conflict, A04's unavailable qualified interviewer and the existing `createSeedData()` import and cloning behavior.
+
+Changed: Copied the fixture source unchanged into `mock/data/seed.mjs` and made `mock/data.mjs` re-export its factory. Updated the API README and its Changes section to document the location and distinguish internal store data from API responses. Recorded the prompts in `brief.md`.
+
+Rejected: Inventing resource response fields, tokens, PDF content or handlers before the resource contracts exist; treating fixture validation as end-to-end API or authorization evidence.
+
+Checks: A Node assertion run passed for legacy/direct import identity, unique IDs and aliases, references, demo roles, dates, statuses, statement limits, qualification, common duration, merged availability coverage, calculated applicant/interviewer/room overlaps, blockers A01/A02/A04 and independent nested mutable seed data. Both modules passed `node --check`. The final documentation diff passed `git diff --check`. Resource contracts and the mock runner are still absent, so the official contract checker and authorization behavior were not exercised. No commit or push was made.
+
+### C1/C3/C4 resource contracts
+
+#### 2026-11-27 - defining campaign and interview setup contracts
+
+Tool: Codex (repository review, contract authoring and Node built-in assertions).
+
+Asked for: `tạo contract C1, C3, C4`, followed by `Please implement the plan.` after the contract plan and lifecycle choices were approved.
+
+Kept: The existing eight method/path pairs, role and error conventions, seed IDs and business data, the A01/A02 conflict and A04 Unassigned state. The user selected separate Draft creation alongside a Published campaign and constrained Published edits before confirmation.
+
+Changed: Added `docs/api/02-campaigns.md` and `docs/api/03-interview-setup.md` with response views, write fields, publication/setup validation, confirmed locks and ordered executable exchanges. Updated README route status and recorded shared decisions before implementation. Documented deterministic input-slot generation before applications exist and protected availability/date afterward. Recorded the real prompts in `brief.md`.
+
+Rejected: Adding session contracts, handlers, seed changes, UI or dependencies in this documentation task; publishing a second campaign or extending the seeded interviewer's availability just to obtain example responses. Moved the active-campaign publication refusal after the isolated Draft receives an interview date in C4 so earlier validation does not mask the intended 409.
+
+Checks: Node assertions passed for all eight endpoint definitions and matching README rows, 15 paired HTTP exchanges, parseable JSON bodies, complete error envelopes, protected example token aliases, seed-based response values, exclusion of private store fields and the setup-before-publication-refusal order. Seed blockers remain A01/A02/A04. `git diff --check` passed. The official checker, session contract, mock runner and FRONTEND.md were not found in the checkout, so no HTTP, authorization, UI or official checker pass is claimed. No commit or push was made.
+
+### Vietnamese reference translations
+
+#### 2026-11-27 - providing separate Vietnamese copies of the C1/C3/C4 contracts
+
+Tool: Codex (contract reading, translation and Node assertions).
+
+Asked for: `cho tôi 2 bản tiếng việt, không sửa contract sang tiếng việt, không viết brief`
+
+Kept: Both English contracts, all 30 HTTP example blocks and their JSON, endpoint paths, field names, error codes and lifecycle rules. Left `brief.md` unchanged as requested.
+
+Changed: Added `docs/translations/02-campaigns.vi.md` and `docs/translations/03-interview-setup.vi.md` as Vietnamese reference copies outside the executable API-contract directory. Each links to its English source and identifies the examples as reference material.
+
+Rejected: Replacing the English contracts, duplicating executable scenarios under `docs/api/`, or appending this prompt to `brief.md` against the user's instruction.
+
+Checks: Exact comparison confirmed that all HTTP blocks match their English sources; JSON bodies parse successfully. SHA-256 comparisons confirmed both source contracts and `brief.md` were unchanged during translation. No commit or push was made.
+
+### PA#3 self-assessment
+
+#### 2026-11-27 - replacing the PA#2 report with an evidence-based PA#3 snapshot
+
+Tool: Codex (PDF skill, bundled pypdf/pdfplumber, Node assertions and local Git inspection).
+
+Asked for: `cập nhật self-assessment theo rubric PA3`
+
+Kept: Existing application files, contract/fixture work and Git history. Left `brief.md` unchanged. The previous PA#2 self-assessment remains available in Git history.
+
+Changed: Replaced `SELF_ASSESSMENT_REPORT.md` with a provisional English PA#3 report using the official nine criteria and template. Claimed 21/100 from current evidence: 3 for partial contract/mock work with no runner, 8 for brief/rules, 8 for the AI log and 2 for existing documentation history; zero for unimplemented runtime criteria. Added feature status, checks, missing deliverables and final packaging requirements.
+
+Rejected: Carrying over PA#2's 87/100 or browser evidence, counting prepared contracts as working React features, claiming an official checker pass, or inferring committed work from untracked files. Found the official checker in the parent course-material directory; earlier entries correctly described its absence from the checkout, not from the parent directory.
+
+Checks: Read all 11 rubric pages and both template pages using bundled pypdf; rendered and visually inspected the criterion table with pdfplumber. The system MiKTeX pdftotext failed on registry/setup access, so extraction used the bundled PDF libraries instead. Confirmed absent client/build/runner/FRONTEND deliverables, 29 indexed endpoints with 8 initially contracted, 15 paired parseable JSON HTTP exchanges, seed counts/ownership/blockers and nested clone independence. Verified score totals, report evidence paths, preserved brief content and `git diff --check`. The official HTTP checker and all app/browser checks remain not run. No commit or push was made.
+
+### C8/C9 schedule contract
+
+#### 2026-11-27 - specifying Draft scheduling and confirmation
+
+Tool: Codex (existing-contract/rubric/checker review, Markdown authoring and Node assertions).
+
+Asked for: `tạo contract C8, C9`
+
+Kept: Existing method/path proposals, C4 configuration ownership, the seed and its intentional manual-edit conflict, application identity and privacy rules. Left `brief.md` unchanged following the user's preference. No mock handlers or UI were added.
+
+Changed: Added `docs/api/05-schedules.md` for the five C8/C9 routes, enriched schedule rows, derived summary, full Draft saves, deterministic generation, CSV export, confirmation gates and cross-resource locks. Added 21 ordered exchanges spanning the seed refusal, resolution, regeneration, availability repair, assignment, open-campaign gate, confirmation and locked writes. Marked the five README routes as initially contracted and documented the shared shape for review before C6/C10 integration. Refreshed the self-assessment's contract evidence to 13/29 endpoints and 36 exchanges; its provisional 21/100 score is unchanged because the mock and React app remain absent.
+
+Rejected: Treating the seeded A01/A02 manual overlap as fresh generation output, trusting client-provided row statuses or confirmation flags, rejecting an entire Draft for a well-formed conflict, inventing extra action endpoints, exposing draft rows to other roles or claiming a live checker pass. Kept possible extra Rejected submissions from the future C5/C7 examples as an explicit shared-checker count dependency rather than silently resetting the store.
+
+Checks: A Node documentation-scenario replay passed for 21 paired exchanges, JSON/error shapes, private-field exclusion, joined labels, all summary counts, interval/merged-availability checks and deduplicated blockers. Independently enumerated first-valid generation and verified A01 room-1 at 09:00, A02 room-1 at 09:20, A03 room-2 at 09:20 and A04 Unassigned under the original setup. Verified C4 extension before A04 assignment, a campaign-only refusal with empty applicationIds, restored closing date, Confirmed assignments and subsequent locks. Static parsing passed for all 36 HTTP exchanges across three resource contracts; README remains 29 routes with 13 initially contracted. `git diff --check` passed. The official HTTP checker, runner, role authorization and UI behavior were not exercised; required session/applications contracts and FRONTEND.md are still pending. No commit or push was made.
+
+#### 2026-11-27 - providing the Vietnamese C8/C9 reference copy
+
+Tool: Codex (contract translation and Node assertions).
+
+Asked for: `tạo bản tiếng việt, không viết brief`
+
+Kept: The English C8/C9 contract, field names, endpoint paths, error codes and all 42 HTTP example blocks. Left `brief.md` unchanged as explicitly requested.
+
+Changed: Added `docs/translations/05-schedules.vi.md`, a Vietnamese reference copy outside the checker's API input directory, with links to the original English contract and the shared C4/README documentation.
+
+Rejected: Translating the authoritative contract in place, modifying executable examples, writing to `brief.md` or claiming an HTTP checker run.
+
+Checks: Exact comparison passed for all 21 paired HTTP exchanges; JSON bodies and local reference links are valid. SHA-256 comparisons confirmed the source contract and `brief.md` were unchanged. `git diff --check` passed. No commit or push was made.
+
+### Local progress review
+
+#### 2026-11-27 - checking Nhân's current tasks against local files
+
+Tool: Codex (local Git, file inventory, documentation review and Node fixture import).
+
+Asked for: `kiểm tra các task hiện tại của Nhân và tiến độ hiện tại ở local`
+
+Kept: Existing implementation files and the proposed team schedule.
+
+Changed: Recorded the real prompt and this review. Compared Nhân's foundation, C1/C3/C4/C8/C9 and delivery tasks with the local checkout.
+
+Rejected: Counting the PA#2 HTML, screenshots or self-assessment as completed PA#3 implementation; inferring current remote progress from local tracking refs.
+
+Checks: The initial working tree on `pa3/task-plan` had only untracked `mock/`; HEAD was `77f3a9e`, matching the local origin tracking ref. Imported `createSeedData()` successfully and inspected its campaign, accounts, applications and draft schedule. Only the shared README exists under `docs/api/`; no resource contracts, `client/`, mock runner, formatter, linter or CI configuration are present. The self-assessment still targets PA#2. No runnable PA#3 app or official contract-checker run was available. No fetch, commit or push was performed.
+
+### API contract review
+
+#### 2026-11-27 - comparing the resource contracts with the project and PA#3
+
+Tool: Codex (official rubric, project brief and checker review, plus Node assertions).
+
+Asked for: `kiểm tra các contract api đánh giá mức độ phù hợp với yêu cầu project và tài liệu PA3`
+
+Kept: The API contracts, fixture data and mock files.
+
+Changed: Recorded the prompt and reviewed coverage for C1–C11. Flagged the lifecycle rule that prevents first publication on the seeded store and the conflicting C4/C8 rules for an existing assignment whose room was deselected.
+
+Checks: The official checker recognized 36 examples and matched examples to 13 of 29 indexed endpoints. It reported 0/36 HTTP responses verified. Token examples lacked a sign-in example and Demo accounts table, and public or unauthenticated requests returned EACCES in the local environment. The mock runner is absent. Static assertions independently verified all 36 example pairs, JSON bodies, error envelopes, Changes sections and the seeded dates and application identity. No commit or push was made.
