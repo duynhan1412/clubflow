@@ -232,7 +232,9 @@ Rejected: Treating the plan as agreed (it is marked as a proposal), editing Nhâ
 
 Checks: `git fetch` found the new remote branch `pa3/requirements`; no PA#3 rubric or contract checker exists in the repository or its parent folder, which the plan lists as the first task.
 
-## 2026-11-26 - preparing the PA#3 shared foundation
+### Shared foundation, rubric and implementation brief
+
+#### 2026-11-26 - preparing the PA#3 shared foundation
 
 Tool: Codex (workspace inspection and file editing).
 
@@ -246,7 +248,7 @@ Rejected: Treating the proposed API conventions as final or implementing the moc
 
 Checks: Cross-referenced the source HTML, task plan and requirements. The official contract checker is pending. No commit or push was made.
 
-## 2026-11-26 - aligning the API documentation with the official rubric
+#### 2026-11-26 - aligning the API documentation with the official rubric
 
 Tool: Codex (rubric extraction, checker source review and repository documentation edits).
 
@@ -260,7 +262,7 @@ Rejected: The earlier header-based mock mode, 422 field validation, 503 simulate
 
 Checks: Compared the endpoint table and example conventions with the checker parser and rubric. The checker needs per-resource examples and a running mock for an end-to-end run. No commit or push was made.
 
-## 2026-11-26 - preparing the PA#3 brief
+#### 2026-11-26 - preparing the PA#3 brief
 
 Tool: Codex (repository review and Markdown editing).
 
@@ -274,7 +276,9 @@ Rejected: Presenting the prepared handoff as a prompt already sent, reconstructi
 
 Checks: Read the ownership rules and compared the handoff with the PA#3 rubric and shared API README. No commit or push was made.
 
-## 2026-11-26 - reviewing the shared decisions and preparing the documentation commit
+### API coordination and demo data
+
+#### 2026-11-26 - reviewing the shared decisions and preparing the documentation commit
 
 Tool: Codex (Git inspection and review of the task plan, API README and draft fixtures).
 
@@ -287,3 +291,61 @@ Changed: Recorded the prompt and selected only the PA#3 foundation documents for
 Rejected: Including the draft mock fixture, treating the route table as a final contract, or treating a scheduled agreement as a recorded team decision.
 
 Checks: Inspected the branch, index and working tree, and checked the documentation diff for whitespace errors. No end-to-end checker run was attempted.
+
+#### 2026-11-27 - recording the proposed shared API decisions
+
+Tool: Codex (workspace inspection and Markdown editing).
+
+Asked for: `sửa theo đề xuất`
+
+Kept: Feature ownership, existing route paths, shared error envelope and PA#2 fixture IDs and dates.
+
+Changed: Recorded the API decisions for handler ownership, session responses, stable availability slots, duplicate submissions, confirmed interviews and the checker scenario. Numbered planned resource filenames for checker order and recorded the real prompt in `brief.md`.
+
+Rejected: Renaming A02's fixture position before the team confirms the Communications mapping, or implementing the mock runner as part of the documentation update.
+
+Checks: Compared the proposed responses and scenario with the route table and draft fixtures. The resource contracts and mock runner are pending.
+
+#### 2026-11-27 - specifying mock registration and the Communications fixture
+
+Tool: Codex (Markdown and fixture editing).
+
+Asked for: `cập nhật 2 nội dung này`
+
+Kept: PA#2 reference pages, campaign dates, application IDs and statuses, and the seeded interview assignments.
+
+Changed: Documented route registration, handler context and response serialization. Updated the PA#3 role, A02 and A05 to Communications, matched the interviewer's qualification and added aliases for the demo accounts.
+
+Rejected: Changing the historical PA#2 snapshot or implementing the shared mock runner in this task.
+
+Checks: Reviewed the updated position references, seeded interviewer and alias mapping. No mock or checker execution was performed.
+
+### Commit readiness
+
+#### 2026-11-27 - checking the documentation and draft fixtures
+
+Tool: Codex (Git inspection, documentation review and a Node fixture check).
+
+Asked for: `kiểm tra đã đủ nội dung commit chưa, chưa commit`
+
+Kept: The current API documentation and draft fixture.
+
+Changed: Recorded the review and its evidence.
+
+Rejected: Staging or committing changes and treating the draft fixture as the final mock.
+
+Checks: The index was empty and `git diff --check` passed. The fixture check passed for demo aliases, A01/A02/A05, position and slot references, draft statuses and interviewer qualifications. The per-resource contracts and mock runner are still pending.
+
+#### 2026-11-27 - preparing the reviewed documentation for push
+
+Tool: Codex (Git inspection and selective staging).
+
+Asked for: `push phần này lên`
+
+Kept: The reviewed API conventions, Communications account mapping and grouped log entries.
+
+Changed: Recorded the request and prepared the four documentation files for a commit on `pa3/task-plan`.
+
+Rejected: Including the untracked mock fixture in the documentation commit.
+
+Checks: Confirmed the branch and remote, confirmed the index was empty and checked the documentation diff for whitespace errors before staging.

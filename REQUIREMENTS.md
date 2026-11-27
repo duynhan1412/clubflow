@@ -388,7 +388,7 @@ Build the complete C1-C11 front end in React against a written API contract and 
 - `client/` source and `client/dist/`.
 - `docs/api/`.
 - `mock/server.mjs` and `mock/data/`.
-- `FRONTEND.md` with team, run instructions, Demo accounts, routes and their endpoints, product-owner decisions with sources, libraries and unfinished work. Include `exec`, `studentA`, `int-content` and `int-comms` in the demo account aliases. The rubric describes `int-comms` as the Communications interviewer. Reconcile that example with the PA#2 position names before finalizing fixtures.
+- `FRONTEND.md` with team, run instructions, Demo accounts, routes and their endpoints, product-owner decisions with sources, libraries and unfinished work. Include `exec`, `studentA`, `int-content` and `int-comms` in the demo account aliases. The PA#3 fixture maps `int-comms` to Võ Quốc Khánh, the Communications interviewer for A02. See `docs/api/README.md` for the full mapping.
 - Current `brief.md` and `AGENTS.md`.
 - Cumulative `AI-LOG.md`.
 - `SELF_ASSESSMENT_REPORT.md`.

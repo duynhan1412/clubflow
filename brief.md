@@ -22,6 +22,20 @@ These prompts are recorded verbatim in order. Append each implementation prompt 
 
 > commit phần tài liệu và nêu chi tiết hơn những phần cần thống nhất: đã có những đề xuất gì, những điểm mơ hồ
 
+### 2026-11-27 · Trịnh Duy Nhân · Shared API decisions
+
+> sửa theo đề xuất
+
+> cập nhật 2 nội dung này
+
+> gộp các AI-LOG vào các nhóm cho phù hợp
+
+> gộp các AI-LOG mới cập nhật 2 ngày gần đây vào các nhóm cho phù hợp
+
+> kiểm tra đã đủ nội dung commit chưa, chưa commit
+
+> push phần này lên
+
 ## Handoff for future implementation prompts
 
 This section is the prepared handoff. The prompts above record work already requested. For each new task, name the feature, allowed files and expected checks, and refer to this handoff.
