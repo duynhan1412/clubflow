@@ -1,6 +1,6 @@
 # ClubFlow PA#3 API conventions
 
-Status: shared conventions aligned with the official PA#3 rubric and checker. The endpoint paths and resource filenames below are proposals for team review.
+Status: shared conventions aligned with the official PA#3 rubric and checker. C1/C3, C4 and C8/C9 now have initial resource contracts; other endpoint rows remain proposals pending their owners' resource contracts. No handler or UI implementation is claimed.
 
 ## Shared implementation decisions
 
@@ -49,41 +49,41 @@ Start the runner with `node mock/server.mjs`. It reads `PORT` (default 3001) and
 
 Retry reissues the failed request without reloading the page after the mock is restarted in normal mode. The runner keeps changes in memory, resets them at startup and logs method, path and status for each request.
 
-## Proposed endpoint table
+## Endpoint table and contract status
 
-Each row is one full method and path. The file column names the planned resource contracts. Keep the table and examples in sync as feature owners add them.
+Each row is one full method and path. The status column distinguishes initial documented contracts from proposed resources. Keep the table and examples in sync as feature owners add them.
 
-| Method | Path | Access | Contract file | Feature |
-| --- | --- | --- | --- | --- |
-| GET | `/api/campaigns` | Public | `02-campaigns.md` | C1 |
-| GET | `/api/campaigns/:campaignId` | Public | `02-campaigns.md` | C1 |
-| POST | `/api/session` | Public | `01-session.md` | C2 |
-| GET | `/api/session` | Signed in | `01-session.md` | C2 |
-| DELETE | `/api/session` | Signed in | `01-session.md` | C2 |
-| POST | `/api/executive/campaigns` | Executive | `02-campaigns.md` | C3 |
-| GET | `/api/executive/campaigns/:campaignId` | Executive | `02-campaigns.md` | C3 |
-| PATCH | `/api/executive/campaigns/:campaignId` | Executive | `02-campaigns.md` | C3 |
-| POST | `/api/executive/campaigns/:campaignId/publish` | Executive | `02-campaigns.md` | C3 |
-| GET | `/api/executive/campaigns/:campaignId/interview-setup` | Executive | `03-interview-setup.md` | C4 |
-| PUT | `/api/executive/campaigns/:campaignId/interview-setup` | Executive | `03-interview-setup.md` | C4 |
-| POST | `/api/campaigns/:campaignId/applications` | Applicant | `04-applications.md` | C5 |
-| GET | `/api/me/applications` | Applicant, own records | `04-applications.md` | C6 |
-| GET | `/api/me/applications/:applicationId` | Applicant, own record | `04-applications.md` | C6 |
-| GET | `/api/executive/campaigns/:campaignId/applications` | Executive | `04-applications.md` | C7 |
-| GET | `/api/executive/campaigns/:campaignId/applications/export` | Executive | `04-applications.md` | C7 |
-| GET | `/api/executive/applications/:applicationId` | Executive | `04-applications.md` | C7 |
-| PATCH | `/api/executive/applications/:applicationId` | Executive | `04-applications.md` | C7 |
-| GET | `/api/executive/campaigns/:campaignId/schedule` | Executive | `05-schedules.md` | C8 |
-| PUT | `/api/executive/campaigns/:campaignId/schedule` | Executive | `05-schedules.md` | C8 |
-| POST | `/api/executive/campaigns/:campaignId/schedule/generate` | Executive | `05-schedules.md` | C8 |
-| GET | `/api/executive/campaigns/:campaignId/schedule/export` | Executive | `05-schedules.md` | C8 |
-| POST | `/api/executive/campaigns/:campaignId/schedule/confirm` | Executive | `05-schedules.md` | C9 |
-| GET | `/api/me/interviews` | Interviewer, assigned confirmed interviews | `06-interviews.md` | C10 |
-| PUT | `/api/me/interviews/:applicationId/assessment` | Interviewer, assigned confirmed interview | `06-interviews.md` | C10 |
-| GET | `/api/applications/:applicationId/cv` | Executive or assigned Interviewer after confirmation | `04-applications.md` | C7/C10 |
-| PUT | `/api/executive/applications/:applicationId/result` | Executive | `07-results.md` | C11 |
-| POST | `/api/executive/campaigns/:campaignId/results/publish` | Executive | `07-results.md` | C11 |
-| GET | `/api/me/notifications` | Applicant, own notifications | `08-notifications.md` | C11 |
+| Method | Path | Access | Contract file | Feature | Status |
+| --- | --- | --- | --- | --- | --- |
+| GET | `/api/campaigns` | Public | `02-campaigns.md` | C1 | Initial contract |
+| GET | `/api/campaigns/:campaignId` | Public | `02-campaigns.md` | C1 | Initial contract |
+| POST | `/api/session` | Public | `01-session.md` | C2 | Proposed |
+| GET | `/api/session` | Signed in | `01-session.md` | C2 | Proposed |
+| DELETE | `/api/session` | Signed in | `01-session.md` | C2 | Proposed |
+| POST | `/api/executive/campaigns` | Executive | `02-campaigns.md` | C3 | Initial contract |
+| GET | `/api/executive/campaigns/:campaignId` | Executive | `02-campaigns.md` | C3 | Initial contract |
+| PATCH | `/api/executive/campaigns/:campaignId` | Executive | `02-campaigns.md` | C3 | Initial contract |
+| POST | `/api/executive/campaigns/:campaignId/publish` | Executive | `02-campaigns.md` | C3 | Initial contract |
+| GET | `/api/executive/campaigns/:campaignId/interview-setup` | Executive | `03-interview-setup.md` | C4 | Initial contract |
+| PUT | `/api/executive/campaigns/:campaignId/interview-setup` | Executive | `03-interview-setup.md` | C4 | Initial contract |
+| POST | `/api/campaigns/:campaignId/applications` | Applicant | `04-applications.md` | C5 | Proposed |
+| GET | `/api/me/applications` | Applicant, own records | `04-applications.md` | C6 | Proposed |
+| GET | `/api/me/applications/:applicationId` | Applicant, own record | `04-applications.md` | C6 | Proposed |
+| GET | `/api/executive/campaigns/:campaignId/applications` | Executive | `04-applications.md` | C7 | Proposed |
+| GET | `/api/executive/campaigns/:campaignId/applications/export` | Executive | `04-applications.md` | C7 | Proposed |
+| GET | `/api/executive/applications/:applicationId` | Executive | `04-applications.md` | C7 | Proposed |
+| PATCH | `/api/executive/applications/:applicationId` | Executive | `04-applications.md` | C7 | Proposed |
+| GET | `/api/executive/campaigns/:campaignId/schedule` | Executive | `05-schedules.md` | C8 | Initial contract |
+| PUT | `/api/executive/campaigns/:campaignId/schedule` | Executive | `05-schedules.md` | C8 | Initial contract |
+| POST | `/api/executive/campaigns/:campaignId/schedule/generate` | Executive | `05-schedules.md` | C8 | Initial contract |
+| GET | `/api/executive/campaigns/:campaignId/schedule/export` | Executive | `05-schedules.md` | C8 | Initial contract |
+| POST | `/api/executive/campaigns/:campaignId/schedule/confirm` | Executive | `05-schedules.md` | C9 | Initial contract |
+| GET | `/api/me/interviews` | Interviewer, assigned confirmed interviews | `06-interviews.md` | C10 | Proposed |
+| PUT | `/api/me/interviews/:applicationId/assessment` | Interviewer, assigned confirmed interview | `06-interviews.md` | C10 | Proposed |
+| GET | `/api/applications/:applicationId/cv` | Executive or assigned Interviewer after confirmation | `04-applications.md` | C7/C10 | Proposed |
+| PUT | `/api/executive/applications/:applicationId/result` | Executive | `07-results.md` | C11 | Proposed |
+| POST | `/api/executive/campaigns/:campaignId/results/publish` | Executive | `07-results.md` | C11 | Proposed |
+| GET | `/api/me/notifications` | Applicant, own notifications | `08-notifications.md` | C11 | Proposed |
 
 The C3 UI can preview current form values without a separate endpoint. The C7 contract must cover filters, statistics, pagination and export.
 
@@ -98,6 +98,21 @@ The C3 UI can preview current form values without a separate endpoint. The C7 co
 - Join the schedule and applications by `applicationId`. C6 returns `interview: null` until an assignment is confirmed. For the applicant's own confirmed assignment, return `interview` with `date`, `start`, `end` and `roomName`. C10 returns only the signed-in interviewer's confirmed assignments. Keep CV access scoped to the assignment.
 - C9 returns `409` with `SCHEDULE_CONFIRMATION_BLOCKED` when confirmation fails. Populate `error.applicationIds` with the applications that need attention, without duplicates. For the initial draft these are A01, A02 and A04. Keep each row's specific reason in the C8 schedule response. Use an empty ID list when the only blocking condition applies to the campaign as a whole.
 - After confirmation, lock campaign configuration, application and screening writes, and scheduling writes. Assessments and Pass/Fail follow separate operations. Leave assessment completion out of the result publication gate unless the rubric or a recorded product-owner decision requires it.
+
+### C1/C3/C4 contract decisions
+
+- C1/C3 use { campaigns: [...] } and { campaign: {...} }; C4 uses { interviewSetup: {...} }. These are response views, not raw fixture serialization. Public campaign views omit interviewer/room configuration and all private recruitment records.
+- Drafts may coexist with one Published campaign. Creation accepts a client-supplied unique ID. A Published campaign may be edited before confirmation if it remains valid and referenced position IDs and applicant availability are preserved. The existing Published campaign, even after application closing, blocks publishing another Draft; no archival operation is introduced here. Repeating publication is idempotent unless the campaign is locked.
+- C3 owns recruitment content; C4 owns interview date/window, duration, selected rooms and campaign-scoped interviewer configuration. PUT setup is full replacement, permits incomplete empty selections, and rechecks an existing Draft schedule without moving assignments. Before applications exist, input slots follow the configured duration/window; after applications exist, their IDs/time ranges and interview date remain protected. See the resource files for exact schemas and validation.
+- Checker examples in 02-campaigns.md create an isolated contract-draft and preserve the seed. The valid second-campaign publication refusal follows that Draft's date setup in 03-interview-setup.md. The 01-session.md sign-in contract and FRONTEND.md aliases remain dependencies owned by C2; no substitute tokens or sign-in contract are added by this slice.
+
+### C8/C9 schedule contract decisions
+
+- 05-schedules.md defines the five existing schedule routes. JSON reads/writes return { schedule, summary }; schedule rows include joined applicant/position/interviewer/room labels, original availabilitySlotIds and derived validation details. The summary includes application/review and row counts, closing/review gates, canConfirm and distinct blockingApplicationIds. These response views need not be stored in fixtures.
+- C4 remains the configuration write boundary. Save date/window/duration there before generating. Schedule PUT accepts the complete set of Shortlisted assignment rows only; Edit, Resolve and Assign Slot use the same method. Well-formed invalid assignments are saved as Conflict; malformed/incomplete assignment tuples return 400. Save and generate keep Draft.
+- Generation processes application IDs, then duration-aligned start times, interviewer IDs and selected room IDs in ascending order, choosing the first valid combination. The seed Conflict snapshot follows a manual edit; fresh generation resolves that overlap and leaves A04 Unassigned until its qualified interviewer's availability is extended.
+- Confirmation rechecks all gates against stored data, stamps and locks the schedule atomically, and leaves assessment/result publication separate. Repeat confirmation and all configuration/schedule writes after confirmation return 409 CAMPAIGN_LOCKED; read/export remain available. C6/C10 must use only confirmed rows through their own scoped endpoints. Review this shared shape with the other owner before wiring those consumers.
+- The checker scenario in 05-schedules.md reads/refuses the original seed, saves/resolves/regenerates, extends C4 availability, assigns A04, demonstrates an open-campaign refusal with no blocking application IDs, restores closing dates, confirms and checks locks. It leaves the confirmed seed available for later C10/C11 files. Session/application examples and FRONTEND.md remain integration dependencies; static example checks do not imply a working mock or an official checker pass.
 
 ## Executable examples
 
@@ -118,7 +133,8 @@ For deterministic examples, the mock runner may read `MOCK_DATE` (`YYYY-MM-DD`, 
 
 ## Shared mock data
 
-- The current catalogue exposes `createSeedData()` in `mock/data.mjs`. Each call returns independent mutable data. Put the submitted fixtures under `mock/data/` and initialize one shared store across feature handlers at startup.
+- The catalogue lives in `mock/data/seed.mjs`. The existing `mock/data.mjs` entry point re-exports `createSeedData()` so callers can keep their documented import. Each call returns independent mutable data. Initialize one shared store across feature handlers at startup.
+- Fixtures describe the internal store, not API response schemas. Resource contracts define the response fields; handlers must construct role-scoped responses rather than serialize the store directly. For example, C6 returns `interview: null` before confirmation and the documented interview fields afterward. Account passwords and Executive-only notes must remain outside responses to unauthorized roles. C1/C3, C4 and C8/C9 response schemas are documented in their resource files; remaining contracts and all handlers are pending, so fixture checks alone do not establish end-to-end contract or authorization compliance.
 - Use the PA#2 timeline and application IDs. Use the campaign date zone (`Asia/Ho_Chi_Minh`) for application dates and local interview times.
 - Demo accounts include `executive@clubflow.test`, `applicant-1@clubflow.test` and `interviewer-1@clubflow.test`. The local fixture password is `clubflow-demo`. Seeded CVs are filenames only. The CV handler will need its own demo PDF content.
 - Join schedule rows by `applicationId`, `interviewerId` and `roomId`. Use `application.applicantId` to detect overlapping interviews across applications. Candidate availability refers to campaign slot IDs. Merge adjacent availability ranges when checking interview windows. Schedule rows carry their assigned start and end times independently of the input slots. Treat adjacent interviews as non-overlapping.
@@ -144,3 +160,6 @@ The PA#3 fixture uses Communications (Điều phối viên Truyền thông) for 
 | 2026-11-26 | Updated endpoint rows and example rules for the official checker. Aligned validation errors, mock modes and demo token lifetime with the PA#3 rubric. |
 | 2026-11-27 | Documented the shared handler boundary, session and duplicate submission responses, scheduling inputs and confirmed views, demo account mapping and checker scenario so both owners can draft compatible resource contracts. |
 | 2026-11-27 | Specified route registration and JSON, CSV and PDF responses. Updated the PA#3 demo account and position mapping to match the rubric's Communications example. |
+| 2026-11-27 | Located fixtures under `mock/data/seed.mjs` while preserving the `mock/data.mjs` import. Distinguished internal store records from resource responses; preserved the seed's business data and intentional draft blockers. |
+| 2026-11-27 | Added initial C1/C3 and C4 resource contracts and route status. Recorded response views, Draft coexistence, constrained Published edits, full setup replacement and checker ordering before implementation. |
+| 2026-11-27 | Added the initial C8/C9 schedule contract and marked its five routes documented. Specified complete Draft saves, response labels/summary, generation order, confirmation gates/locks and the ordered cross-resource checker scenario before implementation. |
