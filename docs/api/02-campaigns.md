@@ -1,7 +1,7 @@
 # Campaigns — C1 and C3
 
 Owner: Trịnh Duy Nhân.
-Status: resource contract; handlers and UI are not implemented.
+Status: the C1/C3 mock handlers are implemented in [`mock/routes/campaigns.mjs`](../../mock/routes/campaigns.mjs). Runner integration and the UI are pending.
 This document adopts the existing README routes. All bodies are JSON; unknown query parameters return 400 VALIDATION_FAILED (field path `query.<name>`). No endpoint here accepts query parameters. Path `campaignId` is a non-empty campaign ID; an unknown ID returns 404. Requests use relative /api URLs.
 
 ## Response schemas

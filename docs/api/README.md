@@ -1,6 +1,6 @@
 # ClubFlow PA#3 API conventions
 
-Status: shared conventions aligned with the official PA#3 rubric and checker. C1/C3, C4 and C8/C9 now have initial resource contracts; other endpoint rows remain proposals pending their owners' resource contracts. No handler or UI implementation is claimed.
+Status: shared conventions aligned with the official PA#3 rubric and checker. C1/C3, C4 and C8/C9 have initial resource contracts; other endpoint rows remain proposals pending their owners' resource contracts. C1/C3 has a feature module ready for runner registration.
 
 ## Shared implementation decisions
 
@@ -9,6 +9,7 @@ Use these defaults when drafting the resource contracts. Nhân maintains the end
 ### Mock handler interface
 
 - Each feature module exposes a `registerRoutes(register)` function. The runner calls it at startup and supplies `register(method, path, handler)`. Register the full `/api` path with the same parameter names used in the contract.
+- Register C1/C3 through [`mock/routes/campaigns.mjs`](../../mock/routes/campaigns.mjs). Pass `body: undefined` for requests without a body. The runner owns malformed JSON handling and the four mock modes.
 - The runner creates one shared store. It matches routes, parses the incoming request, resolves a Bearer token to a user, applies mock mode behavior and logs the response. It passes `{ store, user, params, query, body }` to the handler. Use `user: null` for an unauthenticated request. Handlers enforce the route's required role, record ownership and assignment rules.
 - A handler can be async and returns `{ status, body, headers }`. Omit `headers` for JSON and omit `body` for a bodyless response such as `204`. For CSV return a string with `Content-Type: text/csv; charset=utf-8`. For PDF return a Node `Buffer` with `Content-Type: application/pdf`. The runner serializes JSON and sends the CSV string or PDF bytes directly. The applications contract specifies the multipart upload fields.
 
@@ -134,7 +135,7 @@ For deterministic examples, the mock runner may read `MOCK_DATE` (`YYYY-MM-DD`, 
 ## Shared mock data
 
 - The catalogue lives in `mock/data/seed.mjs`. The existing `mock/data.mjs` entry point re-exports `createSeedData()` so callers can keep their documented import. Each call returns independent mutable data. Initialize one shared store across feature handlers at startup.
-- Fixtures describe the internal store, not API response schemas. Resource contracts define the response fields; handlers must construct role-scoped responses rather than serialize the store directly. For example, C6 returns `interview: null` before confirmation and the documented interview fields afterward. Account passwords and Executive-only notes must remain outside responses to unauthorized roles. C1/C3, C4 and C8/C9 response schemas are documented in their resource files; remaining contracts and all handlers are pending, so fixture checks alone do not establish end-to-end contract or authorization compliance.
+- Fixtures describe the internal store, not API response schemas. Resource contracts define the response fields; handlers must construct role-scoped responses rather than serialize the store directly. For example, C6 returns `interview: null` before confirmation and the documented interview fields afterward. Account passwords and Executive-only notes must remain outside responses to unauthorized roles. C1/C3, C4 and C8/C9 response schemas are documented in their resource files. End-to-end contract and authorization checks require the shared runner.
 - Use the PA#2 timeline and application IDs. Use the campaign date zone (`Asia/Ho_Chi_Minh`) for application dates and local interview times.
 - Demo accounts include `executive@clubflow.test`, `applicant-1@clubflow.test` and `interviewer-1@clubflow.test`. The local fixture password is `clubflow-demo`. Seeded CVs are filenames only. The CV handler will need its own demo PDF content.
 - Join schedule rows by `applicationId`, `interviewerId` and `roomId`. Use `application.applicantId` to detect overlapping interviews across applications. Candidate availability refers to campaign slot IDs. Merge adjacent availability ranges when checking interview windows. Schedule rows carry their assigned start and end times independently of the input slots. Treat adjacent interviews as non-overlapping.

@@ -420,6 +420,30 @@ Checks: Exact comparison passed for all 21 paired HTTP exchanges; JSON bodies an
 
 ### Progress and delivery evidence
 
+#### 2026-11-28 - implementing the C1/C3 campaign mock
+
+Tool: Codex (Node.js feature handlers and direct contract replay).
+
+Asked for: `làm mok C1/C3`
+
+Kept: The six documented routes and their API behavior, the seed, and Dũng's ownership of the shared mock runner.
+
+Changed: Added `mock/routes/campaigns.mjs` with public campaign selection and detail, Executive draft creation, detail and save, and publication. The handlers project role-specific fields, validate writes before mutation, protect positions referenced by applications, apply inclusive intake overlap rules and refuse configuration writes when the schedule is confirmed. Documented the runner registration point and recorded the real prompt.
+
+Checks: `node --check` passed. Node assertions replayed 15 paired C1/C3 exchanges from the campaign and setup contracts, comparing status and full JSON. The cross-resource replay prepared the C4 state in memory. Additional direct checks covered role enforcement, date boundaries, invalid and duplicate fields, referenced positions, confirmed locks, and response isolation. The shared runner, all-mode HTTP checks and the Classroom checker remain pending. No commit or push was made.
+
+#### 2026-11-28 - preparing the C1/C3 mock branch
+
+Tool: Codex (Git and Node.js syntax check).
+
+Asked for: `tên nhánh là pa3/mock-c1-c3, push từ nhánh contracts-nhan, push lên`
+
+Kept: The existing contract history and the separate planning and translation changes.
+
+Changed: Prepared the C1/C3 feature module, API registration notes and related log entries for the requested branch.
+
+Checks: Confirmed the checkout was on `pa3/api-contracts-nhan` at `b20f178`, the index was empty and the feature module passed `node --check`.
+
 #### 2026-11-27 - checking the documentation and draft fixtures
 
 Tool: Codex (Git inspection, documentation review and a Node fixture check).

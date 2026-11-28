@@ -74,6 +74,12 @@ Planning choices: allow a separate Draft alongside the existing Published campai
 
 > cập nhật 2 phương án 1
 
+### 2026-11-28 · Trịnh Duy Nhân · C1/C3 campaign mock
+
+> làm mok C1/C3
+
+> tên nhánh là pa3/mock-c1-c3, push từ nhánh contracts-nhan, push lên
+
 ## Handoff for future implementation prompts
 
 This section is the prepared handoff. The prompts above record work already requested. For each new task, name the feature, allowed files and expected checks, and refer to this handoff.
