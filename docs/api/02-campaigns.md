@@ -1,7 +1,7 @@
 # Campaigns — C1 and C3
 
-Owner: Trịnh Duy Nhân. 
-Status: initial resource contract; handlers and UI are not implemented. 
+Owner: Trịnh Duy Nhân.
+Status: resource contract; handlers and UI are not implemented.
 This document adopts the existing README routes. All bodies are JSON; unknown query parameters return 400 VALIDATION_FAILED (field path `query.<name>`). No endpoint here accepts query parameters. Path `campaignId` is a non-empty campaign ID; an unknown ID returns 404. Requests use relative /api URLs.
 
 ## Response schemas
@@ -37,11 +37,15 @@ New campaigns always have status Draft, timeZone Asia/Ho_Chi_Minh, interviewDate
 
 Draft saves permit incomplete required fields and inconsistent date order, but non-null dates must be real calendar dates. Publish requires trimmed non-empty campaign text, opensOn <= closesOn < interviewDate, at least one department, and at least one position in each department. Each department needs a name; each position needs title, description, requirements and a positive integer quota. Publish errors use 400 VALIDATION_FAILED and zero-based paths such as `departments.0.positions.0.quota`; leave status Draft and the store unchanged. Interview configuration completeness beyond a valid interviewDate is not a C3 publication gate.
 
-A Published campaign may be PATCHed before schedule confirmation, provided the resulting campaign passes the same publication validation. Existing applications prevent removing/replacing referenced position IDs; return 409 REFERENCED_DATA_LOCKED with the affected applicationIds and fieldErrors. Availability is not writable through C3. A Draft may coexist with a Published campaign. At most one campaign has status Published, including a campaign whose application period has ended; this slice introduces no archival/replacement operation. Publishing another Draft returns 409 ACTIVE_CAMPAIGN_EXISTS. Publishing an already Published campaign is idempotent (200, unchanged), unless its schedule is Confirmed, in which case the lock takes precedence. Confirmation locks configuration writes to that campaign, including PATCH and publish.
+A Published campaign may be PATCHed before schedule confirmation, provided the resulting campaign meets the publication field requirements and its application period does not overlap any other Published campaign's period. Existing applications prevent removing/replacing referenced position IDs; return 409 REFERENCED_DATA_LOCKED with the affected applicationIds and fieldErrors. Availability is not writable through C3. Confirmation locks configuration writes to that campaign, including PATCH and publish.
+
+Published campaigns retain their status, data and scoped access after applications close. A Draft may become Published when no other Published campaign is accepting applications on the campaign-local date and its own application period does not overlap another Published campaign's period, including closed and future periods. Both endpoints of each period are inclusive: a shared closing/opening date overlaps, and consecutive calendar days do not. Evaluate the current date in Asia/Ho_Chi_Minh (PA#3 uses MOCK_DATE, default 2026-11-06; PA#4 uses the server clock). The application-example date override does not apply here.
+
+Return 409 ACTIVE_CAMPAIGN_EXISTS on first publication if another campaign is accepting applications or the application periods overlap, and on PATCH of a Published campaign if the resulting periods overlap. For an overlap, return fieldErrors at opensOn and closesOn; for a current-campaign blocker alone, use an empty fieldErrors object. Use an empty applicationIds array in both cases. Validate fields before checking these gates. Check the current Published campaigns and apply the write atomically so concurrent requests cannot create overlapping periods. On success, change only the requested campaign. Publishing an already Published campaign is idempotent (200, unchanged), unless its schedule is Confirmed, in which case the lock takes precedence.
 
 ## Shared errors and mock modes
 
-All errors use the envelope in [README](README.md#error-shape); no refused write changes the store. Error messages below are examples; codes and field paths are contractual. 
+All errors use the envelope in [README](README.md#error-shape); no refused write changes the store. Error messages below are examples; codes and field paths are contractual.
 
 | Status | Code | When |
 | --- | --- | --- |
@@ -50,7 +54,7 @@ All errors use the envelope in [README](README.md#error-shape); no refused write
 | 403 | `FORBIDDEN` | Valid token whose role is not Executive. |
 | 404 | `CAMPAIGN_NOT_FOUND` | Unknown campaign; public detail also hides Draft campaigns. |
 | 409 | `CAMPAIGN_ID_CONFLICT` | POST campaign ID already exists. |
-| 409 | `ACTIVE_CAMPAIGN_EXISTS` | Publishing a Draft while a different campaign is Published. |
+| 409 | `ACTIVE_CAMPAIGN_EXISTS` | First publication while another campaign is accepting applications, or a first publication/Published edit with overlapping application periods. |
 | 409 | `CAMPAIGN_LOCKED` | Campaign's schedule is Confirmed; any configuration write is refused. |
 | 409 | `REFERENCED_DATA_LOCKED` | A write would remove/change identifiers or availability protected by existing references. |
 | 500 | `MOCK_UNAVAILABLE` | Simulated error mode, using the README envelope. |
@@ -65,7 +69,7 @@ Run on one fresh normal-mode mock in file order. The planned 01-session.md must 
 
 ### GET /api/campaigns — C1
 
-Public. No request body. Returns 200 with only Published campaigns, in ID order; no matches returns { campaigns: [] }. Applicable errors: 400, 500.
+Public. No request body. Returns 200 with at most one Published campaign for the public landing page. Using the campaign-local date described above, prefer the campaign currently accepting applications, then the upcoming campaign with the earliest opensOn, then the closed campaign with the latest closesOn. Break equal dates by ascending campaign ID. With no Published campaign, return { campaigns: [] }. Direct public detail links to earlier Published campaigns remain available. Applicable errors: 400, 500.
 
 ```http
 GET /api/campaigns HTTP/1.1
@@ -373,7 +377,7 @@ Content-Type: application/json
 
 ### PATCH /api/executive/campaigns/:campaignId — C3
 
-Executive. Partial request with full nested-array replacement as defined above. Returns 200 with the saved ExecutiveCampaign. Applicable errors: 400, 401, 403, 404, 409 CAMPAIGN_LOCKED / REFERENCED_DATA_LOCKED, 500.
+Executive. Partial request with full nested-array replacement as defined above. Returns 200 with the saved ExecutiveCampaign. Applicable errors: 400, 401, 403, 404, 409 CAMPAIGN_LOCKED / REFERENCED_DATA_LOCKED / ACTIVE_CAMPAIGN_EXISTS, 500.
 
 ```http
 PATCH /api/executive/campaigns/contract-draft HTTP/1.1
@@ -678,3 +682,4 @@ Content-Type: application/json
 | Date | Change and reason |
 | --- | --- |
 | 2026-11-27 | Defined C1/C3 resource schemas, partial Draft saves, publication validation, constrained Published edits and ordered checker exchanges before handler/UI work. Drafts can coexist with one Published campaign; confirmation locks configuration. |
+| 2026-11-28 | Allowed first publication after the preceding intake closes when application periods do not overlap. Kept previous Published records accessible and defined which campaign the public collection selects. |

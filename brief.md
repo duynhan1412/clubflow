@@ -70,6 +70,10 @@ Planning choices: allow a separate Draft alongside the existing Published campai
 
 > kiểm tra các contract api đánh giá mức độ phù hợp với yêu cầu project và tài liệu PA3
 
+### 2026-11-28 · Campaign publication and room selection
+
+> cập nhật 2 phương án 1
+
 ## Handoff for future implementation prompts
 
 This section is the prepared handoff. The prompts above record work already requested. For each new task, name the feature, allowed files and expected checks, and refer to this handoff.

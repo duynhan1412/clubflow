@@ -37,7 +37,7 @@ Times use 24-hour HH:mm with hours 00–23 and minutes 00–59. Dates/times are 
 
 When the campaign has no applications, generate availabilitySlots from the configured window in duration-sized consecutive ranges (slot-1, slot-2, ...), omitting a trailing interval shorter than the duration. Their IDs are unique within the campaign. When applications exist, preserve all existing slot IDs and time ranges even if duration/window changes; these are saved applicant input windows, not appointment IDs. Changing interviewDate after applications exist returns 409 REFERENCED_DATA_LOCKED with affected applicationIds because saved availability refers to that date.
 
-A Published campaign must remain valid under the C3 publication rules after setup edits. Changes are allowed only before schedule confirmation. PUT stores configuration and, if a Draft schedule exists, synchronizes its date/window/duration and rechecks all existing rows using the new configuration. Do not silently move/delete assigned rows, generate a replacement schedule, or confirm it. Invalid rows become Conflict or remain Unassigned with concrete reasons under C8; return those rows through the schedule endpoint, not in this response. Preserve applicant availability selections. Save Changes remains a draft operation.
+A Published campaign must still meet C3's field requirements after setup edits. The rule that blocks first publication during another open intake does not affect edits to a previously Published campaign. Changes are allowed only before schedule confirmation. PUT stores configuration and, if a Draft schedule exists, synchronizes its date/window/duration and rechecks all existing rows using the new configuration. Do not silently move/delete assigned rows, generate a replacement schedule, or confirm it. A room deselected in C4 remains on any existing assignment that references it. Mark that row Conflict with the room name and reason, and allow it to be saved again through C8 while the room exists in the catalogue. Return rechecked rows through the schedule endpoint. Preserve applicant availability selections. Save Changes remains a draft operation.
 
 ## Errors and mock modes
 
@@ -55,7 +55,7 @@ Use the README error envelope with fieldErrors and applicationIds always present
 
 ## Executable examples
 
-Run after 01-session.md and 02-campaigns.md on the same fresh normal-mode mock. Alias exec must already be signed in and contract-draft must exist. C2's contract, runner and official checker execution are pending. These exchanges preserve the seed setup and A01/A02/A04 blockers. Setup of the isolated Draft enables a valid second-campaign publication refusal without replacing the seed.
+Run after 01-session.md and 02-campaigns.md on the same fresh normal-mode mock with default MOCK_DATE=2026-11-06. Alias exec must already be signed in and contract-draft must exist. C2's contract, runner and official checker execution are pending. These exchanges preserve the seed setup and A01/A02/A04 blockers. The isolated Draft tests overlapping-period refusal and successful first publication after the seed closes.
 
 ### GET /api/executive/campaigns/:campaignId/interview-setup
 
@@ -518,9 +518,9 @@ Content-Type: application/json
 }
 ```
 
-### Cross-resource publication refusal
+### Cross-resource publication — reject overlap, then publish
 
-The Draft now meets C3 field requirements, but fall-2026 remains Published. The refusal changes neither campaign:
+The Draft has all required fields, but its application dates still overlap fall-2026. The refusal changes neither campaign:
 
 ```http
 POST /api/executive/campaigns/contract-draft/publish HTTP/1.1
@@ -535,9 +535,353 @@ Content-Type: application/json
 {
   "error": {
     "code": "ACTIVE_CAMPAIGN_EXISTS",
-    "message": "Another campaign is already Published.",
-    "fieldErrors": {},
+    "message": "The application period overlaps another published campaign.",
+    "fieldErrors": {
+      "opensOn": "Choose a period that does not overlap fall-2026.",
+      "closesOn": "Choose a period that does not overlap fall-2026."
+    },
     "applicationIds": []
+  }
+}
+```
+
+Move only the isolated Draft to a non-overlapping application period. Its interview date remains valid:
+
+```http
+PATCH /api/executive/campaigns/contract-draft HTTP/1.1
+Authorization: Bearer {{token:exec}}
+Content-Type: application/json
+
+{
+  "opensOn": "2026-11-08",
+  "closesOn": "2026-11-09"
+}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "campaign": {
+    "id": "contract-draft",
+    "name": "Contract example campaign",
+    "hostClub": "CLB Công nghệ và Sáng tạo",
+    "description": "Recruitment example for contract verification.",
+    "instructions": "Select a position and submit a PDF CV.",
+    "status": "Draft",
+    "opensOn": "2026-11-08",
+    "closesOn": "2026-11-09",
+    "interviewDate": "2026-11-10",
+    "timeZone": "Asia/Ho_Chi_Minh",
+    "interviewWindow": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "durationMinutes": 20,
+    "availabilitySlots": [
+      {
+        "id": "slot-1",
+        "start": "09:00",
+        "end": "09:20"
+      },
+      {
+        "id": "slot-2",
+        "start": "09:20",
+        "end": "09:40"
+      },
+      {
+        "id": "slot-3",
+        "start": "09:40",
+        "end": "10:00"
+      },
+      {
+        "id": "slot-4",
+        "start": "10:00",
+        "end": "10:20"
+      },
+      {
+        "id": "slot-5",
+        "start": "10:20",
+        "end": "10:40"
+      },
+      {
+        "id": "slot-6",
+        "start": "10:40",
+        "end": "11:00"
+      }
+    ],
+    "roomIds": [],
+    "departments": [
+      {
+        "id": "contract-content",
+        "name": "Content",
+        "positions": [
+          {
+            "id": "contract-writer",
+            "title": "Writer",
+            "quota": 1,
+            "description": "Write club news.",
+            "requirements": "Clear writing and teamwork."
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+On the default mock date, fall-2026 has closed. The next intake is still upcoming, and first publication changes it from Draft to Published:
+
+```http
+POST /api/executive/campaigns/contract-draft/publish HTTP/1.1
+Authorization: Bearer {{token:exec}}
+
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "campaign": {
+    "id": "contract-draft",
+    "name": "Contract example campaign",
+    "hostClub": "CLB Công nghệ và Sáng tạo",
+    "description": "Recruitment example for contract verification.",
+    "instructions": "Select a position and submit a PDF CV.",
+    "status": "Published",
+    "opensOn": "2026-11-08",
+    "closesOn": "2026-11-09",
+    "interviewDate": "2026-11-10",
+    "timeZone": "Asia/Ho_Chi_Minh",
+    "interviewWindow": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "durationMinutes": 20,
+    "availabilitySlots": [
+      {
+        "id": "slot-1",
+        "start": "09:00",
+        "end": "09:20"
+      },
+      {
+        "id": "slot-2",
+        "start": "09:20",
+        "end": "09:40"
+      },
+      {
+        "id": "slot-3",
+        "start": "09:40",
+        "end": "10:00"
+      },
+      {
+        "id": "slot-4",
+        "start": "10:00",
+        "end": "10:20"
+      },
+      {
+        "id": "slot-5",
+        "start": "10:20",
+        "end": "10:40"
+      },
+      {
+        "id": "slot-6",
+        "start": "10:40",
+        "end": "11:00"
+      }
+    ],
+    "roomIds": [],
+    "departments": [
+      {
+        "id": "contract-content",
+        "name": "Content",
+        "positions": [
+          {
+            "id": "contract-writer",
+            "title": "Writer",
+            "quota": 1,
+            "description": "Write club news.",
+            "requirements": "Clear writing and teamwork."
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+The public landing page now points to the upcoming campaign. Direct links to the closed campaign still return its published details:
+
+```http
+GET /api/campaigns HTTP/1.1
+
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "campaigns": [
+    {
+      "id": "contract-draft",
+      "name": "Contract example campaign",
+      "hostClub": "CLB Công nghệ và Sáng tạo",
+      "description": "Recruitment example for contract verification.",
+      "instructions": "Select a position and submit a PDF CV.",
+      "status": "Published",
+      "opensOn": "2026-11-08",
+      "closesOn": "2026-11-09",
+      "interviewDate": "2026-11-10",
+      "timeZone": "Asia/Ho_Chi_Minh",
+      "availabilitySlots": [
+        {
+          "id": "slot-1",
+          "start": "09:00",
+          "end": "09:20"
+        },
+        {
+          "id": "slot-2",
+          "start": "09:20",
+          "end": "09:40"
+        },
+        {
+          "id": "slot-3",
+          "start": "09:40",
+          "end": "10:00"
+        },
+        {
+          "id": "slot-4",
+          "start": "10:00",
+          "end": "10:20"
+        },
+        {
+          "id": "slot-5",
+          "start": "10:20",
+          "end": "10:40"
+        },
+        {
+          "id": "slot-6",
+          "start": "10:40",
+          "end": "11:00"
+        }
+      ],
+      "departments": [
+        {
+          "id": "contract-content",
+          "name": "Content",
+          "positions": [
+            {
+              "id": "contract-writer",
+              "title": "Writer",
+              "quota": 1,
+              "description": "Write club news.",
+              "requirements": "Clear writing and teamwork."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+```http
+GET /api/campaigns/fall-2026 HTTP/1.1
+
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "campaign": {
+    "id": "fall-2026",
+    "name": "Tuyển thành viên CLB Công nghệ Mùa Thu 2026",
+    "hostClub": "CLB Công nghệ và Sáng tạo",
+    "description": "ClubFlow tìm kiếm những thành viên yêu thích công nghệ, sáng tạo nội dung và tổ chức hoạt động cộng đồng. Hãy chọn vị trí phù hợp với thế mạnh của bạn và cùng xây dựng các dự án dành cho sinh viên trong năm học 2026–2027.",
+    "instructions": "Chọn vị trí bạn quan tâm, điền thông tin liên hệ, đính kèm CV và viết ngắn gọn lý do muốn tham gia. Bạn có thể nộp đơn cho nhiều vị trí; mỗi đơn được xét riêng. Vui lòng gửi trước ngày 05/11/2026.",
+    "status": "Published",
+    "opensOn": "2026-10-20",
+    "closesOn": "2026-11-05",
+    "interviewDate": "2026-11-10",
+    "timeZone": "Asia/Ho_Chi_Minh",
+    "departments": [
+      {
+        "id": "content",
+        "name": "Ban Nội dung",
+        "positions": [
+          {
+            "id": "pos-content",
+            "title": "Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng",
+            "quota": 3,
+            "description": "Lên ý tưởng và biên tập bài viết, kể câu chuyện về dự án và thành viên trên các kênh truyền thông của CLB.",
+            "requirements": "Viết rõ ràng, biết phối hợp nhóm và có thể dành ít nhất 4 giờ mỗi tuần cho hoạt động của ban."
+          }
+        ]
+      },
+      {
+        "id": "communications",
+        "name": "Ban Truyền thông",
+        "positions": [
+          {
+            "id": "pos-communications",
+            "title": "Điều phối viên Truyền thông",
+            "quota": 2,
+            "description": "Lập kế hoạch truyền thông, điều phối lịch đăng và phối hợp đưa tin cho workshop, ngày hội và buổi gặp gỡ.",
+            "requirements": "Chủ động, giao tiếp tốt và có thể tham gia đưa tin trực tiếp theo lịch hoạt động của CLB."
+          }
+        ]
+      },
+      {
+        "id": "design",
+        "name": "Ban Thiết kế",
+        "positions": [
+          {
+            "id": "pos-design",
+            "title": "Thiết kế Trải nghiệm",
+            "quota": 2,
+            "description": "Thiết kế ấn phẩm và giao diện đơn giản để truyền tải thông tin hoạt động một cách dễ hiểu.",
+            "requirements": "Có sản phẩm mẫu, nắm kiến thức thiết kế cơ bản và sẵn sàng nhận phản hồi để cải thiện."
+          }
+        ]
+      }
+    ],
+    "availabilitySlots": [
+      {
+        "id": "slot-1",
+        "start": "09:00",
+        "end": "09:20"
+      },
+      {
+        "id": "slot-2",
+        "start": "09:20",
+        "end": "09:40"
+      },
+      {
+        "id": "slot-3",
+        "start": "09:40",
+        "end": "10:00"
+      },
+      {
+        "id": "slot-4",
+        "start": "10:00",
+        "end": "10:20"
+      },
+      {
+        "id": "slot-5",
+        "start": "10:20",
+        "end": "10:40"
+      },
+      {
+        "id": "slot-6",
+        "start": "10:40",
+        "end": "11:00"
+      }
+    ]
   }
 }
 ```
@@ -547,3 +891,4 @@ Content-Type: application/json
 | Date | Change and reason |
 | --- | --- |
 | 2026-11-27 | Defined Executive setup read/full replacement, catalogues, validation, campaign-scoped assignments, stable applicant availability after submissions, Draft rechecks and confirmed locks before implementation. Added ordered examples preserving the seed's draft blockers. |
+| 2026-11-28 | Clarified that a deselected room remains on its conflicting Draft row for C8 to save and repair. Added the cross-resource example for overlapping dates and first publication after the preceding intake closes. |

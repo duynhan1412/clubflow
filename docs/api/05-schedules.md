@@ -40,7 +40,7 @@ ScheduleRow contains all fields below, even for Unassigned rows. This is an enri
 | availabilitySlotIds | string[] of the application's original selected slot IDs; unchanged by scheduling. Resolve their ranges through C1 campaign availabilitySlots. |
 | time | { start: HH:mm, end: HH:mm } for an assignment, or null. |
 | interviewerId, interviewerName | Existing interviewer ID and catalogue name, or both null. |
-| roomId, roomName | Selected existing room ID and catalogue name, or both null. |
+| roomId, roomName | Existing room ID and catalogue name, or both null. A Draft Conflict may retain a room that is no longer selected. |
 | status | Proposed, Conflict or Unassigned. These describe row validity; confirmation is a schedule-level state. Valid Confirmed rows retain Proposed. |
 | conflictingApplicationIds | Other overlapping application IDs, unique and ascending; [] when none. Qualification/availability errors can be Conflict with this array empty. |
 | reason | null for Proposed; a concrete human-readable reason for Conflict or Unassigned. Include which availability/qualification/resource failed and name overlapping applications when present. |
@@ -71,11 +71,11 @@ The only request property is required rows, an array of DraftRow. Each DraftRow 
 | applicationId | Non-empty string; unique in the request; belongs to this campaign and is currently Shortlisted. |
 | time | null, or exactly { start: HH:mm, end: HH:mm }; real 24-hour times (00–23 / 00–59), same day, start < end. |
 | interviewerId | Existing interviewer ID or null. |
-| roomId | Existing room ID selected in the campaign's roomIds, or null. |
+| roomId | Existing catalogue room ID or null. A room outside the campaign's roomIds is a Conflict. |
 
-Send exactly one row for every current Shortlisted application. rows: [] is valid only when none are Shortlisted. An omitted/duplicate/foreign/non-Shortlisted application, missing property, partial assignment, unknown ID, non-selected room, unsupported field or malformed time returns 400 VALIDATION_FAILED with zero-based fieldErrors such as rows.1.time.start or rows.1.applicationId. A fully unassigned row must have time, interviewerId and roomId all null; an assigned row must have all three non-null. Do not send status, reason, names, counts, campaignId, date, window, durationMinutes or confirmedAt. Invalid JSON uses empty fieldErrors. A refused write changes neither configuration nor schedule.
+Send exactly one row for every current Shortlisted application. rows: [] is valid only when none are Shortlisted. An omitted/duplicate/foreign/non-Shortlisted application, missing property, partial assignment, unknown ID, unsupported field or malformed time returns 400 VALIDATION_FAILED with zero-based fieldErrors such as rows.1.time.start, rows.1.roomId or rows.1.applicationId. A fully unassigned row must have time, interviewerId and roomId all null; an assigned row must have all three non-null. Do not send status, reason, names, counts, campaignId, date, window, durationMinutes or confirmedAt. Invalid JSON uses empty fieldErrors. A refused write changes neither configuration nor schedule.
 
-Syntactically valid assignments may still violate duration, window, qualification or availability, or overlap another assignment. Save those rows as Conflict with reasons and the current blockers; do not refuse the whole Draft just because it cannot yet be confirmed. PUT rechecks every row, including both sides of a new or resolved overlap, before returning the saved Draft. Save Changes preserves Draft and confirmedAt: null. Edit, Resolve and + Assign Slot all use this PUT; there are no additional action endpoints. Preserve unsaved valid form input on a refused write.
+Syntactically valid assignments may still violate duration, window, qualification, room selection or availability, or overlap another assignment. Save those rows as Conflict with reasons and the current blockers. Retain the assigned time, interviewer and catalogue room on a row whose room was deselected in C4, so changes to other rows can be saved in the same request. Its reason names the deselected room. PUT rechecks every row, including both sides of a new or resolved overlap, before returning the saved Draft. Save Changes preserves Draft and confirmedAt: null. Edit, Resolve and + Assign Slot all use this PUT; there are no additional action endpoints. Preserve unsaved valid form input on a refused write.
 
 The user may edit locally, but each submitted edit must be rechecked from the PUT response before presenting its validity as authoritative. The server returns a complete updated Draft, not a patch. No revision/concurrency token is introduced in this PA#3 contract.
 
@@ -85,7 +85,7 @@ Configure date, window and common duration through C4 PUT interview-setup before
 
 PUT/generate require a real interviewDate after closesOn when closesOn is set, a valid same-day window long enough for the common duration, and duration 15/20/30. Missing/invalid date/window/duration returns 409 INTERVIEW_SETUP_INCOMPLETE with fieldErrors naming the C4 fields. Empty interviewer/room selections are not setup errors: generation returns Unassigned rows with concrete reasons. Changing the interview date after applications exist remains forbidden by C4.
 
-For every assigned row check: current Shortlisted status, date/window, exactly durationMinutes, interviewer qualification for the position, full Applicant availability, full Interviewer availability, full room availability and no Applicant/Interviewer/room overlap. Merge adjacent availability ranges before checking full containment. An interval [start,end) overlaps another only when start < other.end and other.start < end; adjacent interviews do not overlap. Check all existing assigned intervals, even if another validity check already fails. Mark every participant in each overlap Conflict; conflictingApplicationIds excludes self, is unique and sorted, and reason identifies applicant/interviewer/room overlaps separately. A non-overlapping invalid assignment is still Conflict with its specific reason. Fully null rows are Unassigned with an explanation, never an automatic rejection.
+For every assigned row check: current Shortlisted status, date/window, exactly durationMinutes, interviewer qualification for the position, full Applicant availability, full Interviewer availability, room selection for this campaign, full room availability and no Applicant/Interviewer/room overlap. Merge adjacent availability ranges before checking full containment. An interval [start,end) overlaps another only when start < other.end and other.start < end; adjacent interviews do not overlap. Check all existing assigned intervals, even if another validity check already fails. Mark every participant in each overlap Conflict; conflictingApplicationIds excludes self, is unique and sorted, and reason identifies applicant/interviewer/room overlaps separately. A non-overlapping invalid assignment is still Conflict with its specific reason. Fully null rows are Unassigned with an explanation, never an automatic rejection.
 
 Generation replaces the entire saved Draft; it does not edit screening status, application availability or setup. Process Shortlisted applications by ascending application ID. For each, enumerate start times from window.start in common-duration increments, ignoring a trailing interval shorter than duration, then qualified interviewers by ascending ID, then selected rooms by ascending ID. Take the first combination satisfying all checks against earlier placements, or emit an Unassigned row with a concrete failure reason (for example no qualified interviewer, no shared availability or no free selected room). This makes the generation sequence explicit. PA#3 may serve prepared responses only if they demonstrate the same valid states; PA#4 implements the rule. Generation must not manufacture the seed's manual-edit conflict.
 
@@ -849,9 +849,438 @@ Content-Type: application/json
 }
 ```
 
-### Cross-resource repair — extend the qualified interviewer's availability
+### Cross-resource edit — save a Draft with a deselected room
 
-This is the already documented C4 PUT, performed here after the initial confirmation refusal, not a new route. It extends interviewer-1 through 10:20; it preserves Applicant input slots. Its response schema is exactly C4's:
+Extend the Content interviewer through 10:20 so A04 can be assigned, and deselect Lab 2. The generated A03 assignment stays in Lab 2 and becomes Conflict:
+
+```http
+PUT /api/executive/campaigns/fall-2026/interview-setup HTTP/1.1
+Authorization: Bearer {{token:exec}}
+Content-Type: application/json
+
+{
+  "interviewDate": "2026-11-10",
+  "interviewWindow": {
+    "start": "09:00",
+    "end": "11:00"
+  },
+  "durationMinutes": 20,
+  "roomIds": [
+    "room-1",
+    "room-3"
+  ],
+  "interviewers": [
+    {
+      "id": "interviewer-1",
+      "positionIds": [
+        "pos-content"
+      ],
+      "availability": [
+        {
+          "start": "09:00",
+          "end": "10:20"
+        }
+      ]
+    },
+    {
+      "id": "interviewer-2",
+      "positionIds": [
+        "pos-communications"
+      ],
+      "availability": [
+        {
+          "start": "09:00",
+          "end": "11:00"
+        }
+      ]
+    },
+    {
+      "id": "interviewer-3",
+      "positionIds": [
+        "pos-design"
+      ],
+      "availability": [
+        {
+          "start": "09:00",
+          "end": "11:00"
+        }
+      ]
+    }
+  ]
+}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "interviewSetup": {
+    "campaignId": "fall-2026",
+    "interviewDate": "2026-11-10",
+    "interviewWindow": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "durationMinutes": 20,
+    "roomIds": [
+      "room-1",
+      "room-3"
+    ],
+    "interviewers": [
+      {
+        "id": "interviewer-1",
+        "name": "Đặng Thu Hà",
+        "positionIds": [
+          "pos-content"
+        ],
+        "availability": [
+          {
+            "start": "09:00",
+            "end": "10:20"
+          }
+        ]
+      },
+      {
+        "id": "interviewer-2",
+        "name": "Võ Quốc Khánh",
+        "positionIds": [
+          "pos-communications"
+        ],
+        "availability": [
+          {
+            "start": "09:00",
+            "end": "11:00"
+          }
+        ]
+      },
+      {
+        "id": "interviewer-3",
+        "name": "Bùi Mai Linh",
+        "positionIds": [
+          "pos-design"
+        ],
+        "availability": [
+          {
+            "start": "09:00",
+            "end": "11:00"
+          }
+        ]
+      }
+    ],
+    "rooms": [
+      {
+        "id": "room-1",
+        "name": "Lab 1",
+        "availability": [
+          {
+            "start": "09:00",
+            "end": "11:00"
+          }
+        ]
+      },
+      {
+        "id": "room-2",
+        "name": "Lab 2",
+        "availability": [
+          {
+            "start": "09:00",
+            "end": "11:00"
+          }
+        ]
+      },
+      {
+        "id": "room-3",
+        "name": "Lab 3",
+        "availability": [
+          {
+            "start": "09:00",
+            "end": "11:00"
+          }
+        ]
+      }
+    ],
+    "positions": [
+      {
+        "id": "pos-content",
+        "title": "Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng"
+      },
+      {
+        "id": "pos-communications",
+        "title": "Điều phối viên Truyền thông"
+      },
+      {
+        "id": "pos-design",
+        "title": "Thiết kế Trải nghiệm"
+      }
+    ]
+  }
+}
+```
+
+Assign A04 at 10:00–10:20 in Lab 1 and save all four rows. A03 retains its time, interviewer and catalogue room, with an explicit Conflict reason:
+
+```http
+PUT /api/executive/campaigns/fall-2026/schedule HTTP/1.1
+Authorization: Bearer {{token:exec}}
+Content-Type: application/json
+
+{
+  "rows": [
+    {
+      "applicationId": "A01",
+      "time": {
+        "start": "09:00",
+        "end": "09:20"
+      },
+      "interviewerId": "interviewer-1",
+      "roomId": "room-1"
+    },
+    {
+      "applicationId": "A02",
+      "time": {
+        "start": "09:20",
+        "end": "09:40"
+      },
+      "interviewerId": "interviewer-2",
+      "roomId": "room-1"
+    },
+    {
+      "applicationId": "A03",
+      "time": {
+        "start": "09:20",
+        "end": "09:40"
+      },
+      "interviewerId": "interviewer-3",
+      "roomId": "room-2"
+    },
+    {
+      "applicationId": "A04",
+      "time": {
+        "start": "10:00",
+        "end": "10:20"
+      },
+      "interviewerId": "interviewer-1",
+      "roomId": "room-1"
+    }
+  ]
+}
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "schedule": {
+    "campaignId": "fall-2026",
+    "date": "2026-11-10",
+    "window": {
+      "start": "09:00",
+      "end": "11:00"
+    },
+    "durationMinutes": 20,
+    "status": "Draft",
+    "confirmedAt": null,
+    "rows": [
+      {
+        "applicationId": "A01",
+        "status": "Proposed",
+        "time": {
+          "start": "09:00",
+          "end": "09:20"
+        },
+        "interviewerId": "interviewer-1",
+        "roomId": "room-1",
+        "conflictingApplicationIds": [],
+        "reason": null,
+        "applicantId": "applicant-1",
+        "applicantName": "Nguyễn Thị Minh Anh",
+        "positionId": "pos-content",
+        "positionTitle": "Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng",
+        "availabilitySlotIds": [
+          "slot-1",
+          "slot-2"
+        ],
+        "interviewerName": "Đặng Thu Hà",
+        "roomName": "Lab 1"
+      },
+      {
+        "applicationId": "A02",
+        "status": "Proposed",
+        "time": {
+          "start": "09:20",
+          "end": "09:40"
+        },
+        "interviewerId": "interviewer-2",
+        "roomId": "room-1",
+        "conflictingApplicationIds": [],
+        "reason": null,
+        "applicantId": "applicant-1",
+        "applicantName": "Nguyễn Thị Minh Anh",
+        "positionId": "pos-communications",
+        "positionTitle": "Điều phối viên Truyền thông",
+        "availabilitySlotIds": [
+          "slot-1",
+          "slot-2"
+        ],
+        "interviewerName": "Võ Quốc Khánh",
+        "roomName": "Lab 1"
+      },
+      {
+        "applicationId": "A03",
+        "status": "Conflict",
+        "time": {
+          "start": "09:20",
+          "end": "09:40"
+        },
+        "interviewerId": "interviewer-3",
+        "roomId": "room-2",
+        "conflictingApplicationIds": [],
+        "reason": "Lab 2 is no longer selected for this campaign.",
+        "applicantId": "applicant-2",
+        "applicantName": "Trần Quang Huy",
+        "positionId": "pos-design",
+        "positionTitle": "Thiết kế Trải nghiệm",
+        "availabilitySlotIds": [
+          "slot-2",
+          "slot-3"
+        ],
+        "interviewerName": "Bùi Mai Linh",
+        "roomName": "Lab 2"
+      },
+      {
+        "applicationId": "A04",
+        "status": "Proposed",
+        "time": {
+          "start": "10:00",
+          "end": "10:20"
+        },
+        "interviewerId": "interviewer-1",
+        "roomId": "room-1",
+        "conflictingApplicationIds": [],
+        "reason": null,
+        "applicantId": "applicant-3",
+        "applicantName": "Lê Hoàng Phúc",
+        "positionId": "pos-content",
+        "positionTitle": "Chuyên viên Nội dung Truyền thông và Kể chuyện Cộng đồng",
+        "availabilitySlotIds": [
+          "slot-4",
+          "slot-5",
+          "slot-6"
+        ],
+        "interviewerName": "Đặng Thu Hà",
+        "roomName": "Lab 1"
+      }
+    ]
+  },
+  "summary": {
+    "totalApplications": 5,
+    "reviewedApplications": 5,
+    "shortlistedApplications": 4,
+    "proposed": 3,
+    "conflict": 1,
+    "unassigned": 0,
+    "applicationsClosed": true,
+    "allApplicationsReviewed": true,
+    "canConfirm": false,
+    "blockingApplicationIds": [
+      "A03"
+    ]
+  }
+}
+```
+
+A room ID absent from the catalogue remains an invalid request. This refused write leaves the saved Draft intact:
+
+```http
+PUT /api/executive/campaigns/fall-2026/schedule HTTP/1.1
+Authorization: Bearer {{token:exec}}
+Content-Type: application/json
+
+{
+  "rows": [
+    {
+      "applicationId": "A01",
+      "time": {
+        "start": "09:00",
+        "end": "09:20"
+      },
+      "interviewerId": "interviewer-1",
+      "roomId": "room-1"
+    },
+    {
+      "applicationId": "A02",
+      "time": {
+        "start": "09:20",
+        "end": "09:40"
+      },
+      "interviewerId": "interviewer-2",
+      "roomId": "room-1"
+    },
+    {
+      "applicationId": "A03",
+      "time": {
+        "start": "09:20",
+        "end": "09:40"
+      },
+      "interviewerId": "interviewer-3",
+      "roomId": "missing-room"
+    },
+    {
+      "applicationId": "A04",
+      "time": {
+        "start": "10:00",
+        "end": "10:20"
+      },
+      "interviewerId": "interviewer-1",
+      "roomId": "room-1"
+    }
+  ]
+}
+```
+
+```http
+HTTP/1.1 400 Bad Request
+Content-Type: application/json
+
+{
+  "error": {
+    "code": "VALIDATION_FAILED",
+    "message": "Check the highlighted fields.",
+    "fieldErrors": {
+      "rows.2.roomId": "Choose a room from the catalogue."
+    },
+    "applicationIds": []
+  }
+}
+```
+
+Confirmation is blocked by A03, the only row affected by the deselection:
+
+```http
+POST /api/executive/campaigns/fall-2026/schedule/confirm HTTP/1.1
+Authorization: Bearer {{token:exec}}
+
+```
+
+```http
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{
+  "error": {
+    "code": "SCHEDULE_CONFIRMATION_BLOCKED",
+    "message": "Resolve the schedule blockers before confirming.",
+    "fieldErrors": {},
+    "applicationIds": [
+      "A03"
+    ]
+  }
+}
+```
+
+Select Lab 2 again. C4 rechecks the Draft and keeps the assignment times unchanged:
 
 ```http
 PUT /api/executive/campaigns/fall-2026/interview-setup HTTP/1.1
@@ -1020,7 +1449,7 @@ Content-Type: application/json
 }
 ```
 
-Assign A04 10:00–10:20 in Lab 1. The other rooms may be restored to their seed values because those assignments are valid. Save remains Draft:
+Keep A04 at 10:00–10:20 in Lab 1, and move A02 and A03 to their original rooms. All assignments are now valid and Save Changes keeps the schedule in Draft:
 
 ```http
 PUT /api/executive/campaigns/fall-2026/schedule HTTP/1.1
@@ -1949,3 +2378,4 @@ Content-Type: application/json
 | Date | Change and reason |
 | --- | --- |
 | 2026-11-27 | Defined C8/C9 reads, complete Draft saves, deterministic generation, CSV export, derived summaries, validation, atomic confirmation gates and cross-resource locks before handlers/UI. Added ordered seed-based refusal/repair/confirmation examples and documented C4 configuration ownership, missing-schedule behavior and scoped confirmed-read dependencies. |
+| 2026-11-28 | Allowed Draft saves to retain a known catalogue room after deselection. Added examples for saving another assignment, rejecting an unknown room, blocking confirmation, and repairing the schedule. |
